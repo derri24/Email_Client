@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Email_Client
 {
@@ -13,9 +14,25 @@ namespace Email_Client
         }
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
-        { 
-            ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
-            receiveMessageWindow.ShowDialog();
+        {
+            if (ReceiptHostTextBox.Text != "" && ReceiptPortTextBox.Text != "" &&
+                EmailTextBox.Text != "" & PasswordTextBox.Text != "")
+            {
+                try
+                {
+                    Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text),
+                        EmailTextBox.Text, PasswordTextBox.Text);
+                    
+                    ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
+                    receiveMessageWindow.ShowDialog();
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка авторизации! Проверьте заполненные поля!");
+                }
+            }
+            else
+                MessageBox.Show("Ошибка! Заполнены не все поля!");
         }
     }
 }

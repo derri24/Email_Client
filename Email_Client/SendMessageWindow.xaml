@@ -15,7 +15,7 @@
                 <TranslateTransform X="20" Y="5" />
             </Label.RenderTransform>
         </Label>
-        <TextBox FontSize="16" Width="357" Height="25" FontFamily="Century">
+        <TextBox FontSize="16" Width="357" Height="25" FontFamily="Century" Name="ReceiverTextBox" Text="im.derri24@yandex.ru">
             <TextBox.RenderTransform>
                 <TranslateTransform X="69" Y="-175" />
             </TextBox.RenderTransform>
@@ -32,7 +32,7 @@
                 <TranslateTransform X="20" Y="50" />
             </Label.RenderTransform>
         </Label>
-        <TextBox FontSize="16" Width="423" Height="25" FontFamily="Century">
+        <TextBox FontSize="16" Width="423" Height="25" FontFamily="Century" Name="SubjectTextBox">
             <TextBox.RenderTransform>
                 <TranslateTransform X="35" Y="-130" />
             </TextBox.RenderTransform>
@@ -80,7 +80,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Content="📎" FontSize="22" Width="26" Height="30" FontFamily="Mistral" Background="Turquoise">
+        <Button Content="📎" FontSize="22" Width="26" Height="30" FontFamily="Mistral" Background="Turquoise" Name="AttachmentBtn" Click="AttachmentButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="233" Y="-75" />
             </Button.RenderTransform>
@@ -93,7 +93,7 @@
         
         
         <TextBox FontSize="16" Width="495" Height="200" FontFamily="Century" AcceptsReturn="True" 
-                 VerticalScrollBarVisibility="Auto">
+                 VerticalScrollBarVisibility="Auto" Name="MessageTextBox">
             <TextBox.RenderTransform>
                 <TranslateTransform X="0" Y="45" />
             </TextBox.RenderTransform>
@@ -104,7 +104,7 @@
             </TextBox.Resources>
         </TextBox>
 
-        <Button Content="Отправить" FontSize="30" Width="495" Height="35" FontFamily="Mistral" Background="Turquoise">
+        <Button Content="Отправить" FontSize="30" Width="495" Height="35" FontFamily="Mistral" Background="Turquoise" Click="SendMessageButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="0" Y="176" />
             </Button.RenderTransform>
