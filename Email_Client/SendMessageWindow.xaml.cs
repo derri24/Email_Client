@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -7,19 +8,23 @@ namespace Email_Client
 {
     public partial class SendMessageWindow : Window
     {
-        private string path;
+        private List<string> listOfPath;
 
         public SendMessageWindow()
         {
             InitializeComponent();
+            listOfPath = new List<string>();
         }
 
         private void AttachmentButton_Click(object sender, RoutedEventArgs e)
         {
-            path = "";
             var dialog = new Microsoft.Win32.OpenFileDialog();
             if (dialog.ShowDialog() == true)
-                path = dialog.FileName;
+            {
+                string path = dialog.FileName;
+                listOfPath.Add(path);
+            }
+                
             AttachmentBtn.Background = Brushes.LightGray;
         }
 
@@ -33,9 +38,9 @@ namespace Email_Client
                 {
                     Sender.Authorization(settingsWindow.SendHostTextBox.Text,
                         Convert.ToInt32(settingsWindow.SendPortTextBox.Text), mainWindow.EmailTextBox.Text,
-                        mainWindow.PasswordTextBox.Text);
+                        mainWindow.PasswordTextBox.Password);
 
-                    Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, MessageTextBox.Text, path);
+                    Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, MessageTextBox.Text, listOfPath);
                     MessageBox.Show("Сообщение успешно отправлено!");
                     AttachmentBtn.Background = Brushes.Turquoise;
                     Close();

@@ -74,16 +74,19 @@
                 <TranslateTransform X="12" Y="230" />
             </Label.RenderTransform>
         </Label>
-        <TextBox FontSize="16" Width="230" Height="25" FontFamily="Century" Name="PasswordTextBox" Text="Hk341KHkb41hl">
-            <TextBox.RenderTransform>
+ 
+      
+        <PasswordBox FontSize="14" Width="230" Height="25" FontFamily="Century" Name="PasswordTextBox" Password="Hk341KHkb41hl"
+                 >
+            <PasswordBox.RenderTransform>
                 <TranslateTransform X="40" Y="85" />
-            </TextBox.RenderTransform>
-            <TextBox.Resources>
+            </PasswordBox.RenderTransform>
+            <PasswordBox.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="3" />
                 </Style>
-            </TextBox.Resources>
-        </TextBox>
+            </PasswordBox.Resources>
+        </PasswordBox>
         
         <Button Content="Войти" FontSize="30" Width="315" Height="35" FontFamily="Mistral" Background="Turquoise" Click="GoButton_Click">
             <Button.RenderTransform>

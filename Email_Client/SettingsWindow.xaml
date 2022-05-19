@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Email_Client"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+      
         Title="" Height="250" Width="350">
     <Grid>
         <Label FontSize="35" FontWeight="10" FontFamily="Mistral">
@@ -47,7 +48,7 @@
                 </Style>
             </TextBox.Resources>
         </TextBox>
-        <Button Content="Выйти из учётной записи" FontSize="23" Width="270" Height="33" FontFamily="Mistral" Background="Turquoise" >
+        <Button Content="Выйти из приложения" FontSize="23" Width="270" Height="33" FontFamily="Mistral" Background="Turquoise" Click="ExitButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-17" Y="70" />
             </Button.RenderTransform>

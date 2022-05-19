@@ -6,9 +6,8 @@
         xmlns:local="clr-namespace:Email_Client"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-       
         Title="" Height="750" Width="1150">
-    <Grid>
+    <Grid >
         <Button Content="⚙" FontSize="24" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="SettingsButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-510" Y="-310" />
@@ -19,7 +18,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Label FontSize="25" FontWeight="10" FontFamily="Mistral">
+        <Label FontSize="25" FontWeight="10" FontFamily="Mistral" Margin="0,0,0,30">
             tvo77iNik@mail.com
             <Label.RenderTransform>
                 <TranslateTransform X="90" Y="30" />
@@ -56,7 +55,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Content="🔃" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise">
+        <Button Content="🔃" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="LoadListBox">
             <Button.RenderTransform>
                 <TranslateTransform X="-328" Y="-260" />
             </Button.RenderTransform>
@@ -87,11 +86,58 @@
                 </Style>
             </Button.Resources>
         </Button>  
-        <ListBox Background="White" Width="810" Height="620" Margin="5">
+        <!-- ОБНОВЛЕНИЕ, ЛОЭДЭД СОБЫТИЕ -->
+        <ListBox Background="White" Width="810" Height="570" Margin="5" FontFamily="Century" FontSize="16" Name="ListBox" Loaded="LoadListBox"  SelectionChanged="ListBox_OnSelectionChanged">
             <ListBox.RenderTransform>
-                <TranslateTransform X="117" Y="30" />
+                <TranslateTransform X="117" Y="6" />
             </ListBox.RenderTransform>
         </ListBox>
+        
+        
+        <WebBrowser Width="810" Height="570" Margin="5"  Name="MyWebBrowser" Visibility="Hidden" >
+            <WebBrowser.RenderTransform>
+                <TranslateTransform X="117" Y="6" />
+            </WebBrowser.RenderTransform>
+        </WebBrowser>
        
+        
+        
+        <Button Content="↫" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Name="ComeBackButton" Click="ComeBackClick">
+            <Button.RenderTransform>
+                <TranslateTransform X="-328" Y="275" />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        
+        <Button Content="◀" FontSize="28" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="LeftArrowClick" Name="LeftArrowButton">
+            <Button.RenderTransform>
+                <TranslateTransform X="35" Y="325" />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button> 
+        <Label FontSize="25" FontWeight="10" FontFamily="Mistral" Name="PageNumberLabel">
+            1
+            <Label.RenderTransform>
+                <TranslateTransform X="670" Y="660" />
+            </Label.RenderTransform>
+        </Label>
+        <Button Content="▶" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="RightArrowClick" Name="RightArrowButton">
+            <Button.RenderTransform>
+                <TranslateTransform X="185" Y="325" />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
     </Grid>
 </Window>

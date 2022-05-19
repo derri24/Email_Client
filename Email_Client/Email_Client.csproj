@@ -42,6 +42,9 @@
           <HintPath>..\packages\MailKit.3.2.0\lib\net48\MailKit.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <HintPath>..\..\..\..\..\..\..\..\Windows\assembly\GAC\Microsoft.mshtml\7.0.3300.0__b03f5f7f11d50a3a\Microsoft.mshtml.dll</HintPath>
+        </Reference>
         <Reference Include="MimeKit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814">
           <HintPath>..\packages\MimeKit.3.2.0\lib\net48\MimeKit.dll</HintPath>
           <Private>True</Private>

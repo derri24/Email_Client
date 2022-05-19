@@ -16,12 +16,12 @@ namespace Email_Client
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
             if (ReceiptHostTextBox.Text != "" && ReceiptPortTextBox.Text != "" &&
-                EmailTextBox.Text != "" & PasswordTextBox.Text != "")
+                EmailTextBox.Text != "" & PasswordTextBox.Password != "")
             {
                 try
                 {
                     Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text),
-                        EmailTextBox.Text, PasswordTextBox.Text);
+                        EmailTextBox.Text, PasswordTextBox.Password);
                     
                     ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
                     receiveMessageWindow.ShowDialog();
