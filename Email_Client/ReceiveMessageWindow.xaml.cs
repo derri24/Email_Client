@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,23 +52,29 @@ namespace Email_Client
         //пересмотреть клики на кнопки
         private void LeftArrowClick(object sender, RoutedEventArgs e)
         {
-            ListBox.Items.Clear();
-            if (Counter % countOfMessagesOnPage == 0 && Counter - countOfMessagesOnPage >= 0)
+           
+            if (Counter % countOfMessagesOnPage == 0 && Counter - countOfMessagesOnPage > 0)
             {
+                ListBox.Items.Clear();
+                Counter -= countOfMessagesOnPage;
                 List<string> listOfMessages = Receiver.ReceiveHeaders(Counter - countOfMessagesOnPage, Counter);
                 for (int i = 0; i < listOfMessages.Count && i < Counter; i++)
                     ListBox.Items.Add(listOfMessages[i]);
-                Counter -= countOfMessagesOnPage;
+                Number--;
+                PageNumberLabel.Content = Number.ToString();
             }
-            else if (Counter % countOfMessagesOnPage != 0 && Counter - countOfMessagesOnPage >= 0 )
+            else if (Counter % countOfMessagesOnPage != 0 && Counter - countOfMessagesOnPage > 0 )
             {
-                List<string> listOfMessages = Receiver.ReceiveHeaders(Counter - (Counter % countOfMessagesOnPage), Counter);
+                ListBox.Items.Clear();
+                List<string> listOfMessages = Receiver.ReceiveHeaders(Counter - (Counter % countOfMessagesOnPage)-countOfMessagesOnPage, Counter- (Counter % countOfMessagesOnPage));
                 for (int i = 0; i < listOfMessages.Count && i < Counter; i++)
                     ListBox.Items.Add(listOfMessages[i]);
                 Counter -= Counter % countOfMessagesOnPage;
+                Number--;
+                PageNumberLabel.Content = Number.ToString();
             }
-            Number--;
-            PageNumberLabel.Content = Number.ToString();
+            
+          
         }
 
         private void RightArrowClick(object sender, RoutedEventArgs e)
@@ -80,6 +87,7 @@ namespace Email_Client
                     ListBox.Items.Add(listOfMessages[i]);
                 Counter += countOfMessagesOnPage;
                 Number++;
+                PageNumberLabel.Content = Number.ToString();
             }
             else if (Counter!= CountMessages)
             {
@@ -89,8 +97,9 @@ namespace Email_Client
                     ListBox.Items.Add(listOfMessages[i]);
                 Counter += CountMessages % Counter;
                 Number++;
+                PageNumberLabel.Content = Number.ToString();
             }
-            PageNumberLabel.Content = Number.ToString();
+          
         }
 
         private void ComeBackClick(object sender, RoutedEventArgs e)
@@ -103,7 +112,7 @@ namespace Email_Client
             RightArrowButton.Visibility = Visibility.Visible;
         }
         
-        private void ListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListBoxOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MyWebBrowser.Visibility = Visibility.Visible;
             ComeBackButton.Visibility = Visibility.Visible;
@@ -111,9 +120,18 @@ namespace Email_Client
             PageNumberLabel.Visibility = Visibility.Hidden;
             LeftArrowButton.Visibility = Visibility.Hidden;
             RightArrowButton.Visibility = Visibility.Hidden;
-            MyWebBrowser.NavigateToString(Receiver.GetMessageBodyByIndex(ListBox.SelectedIndex).ToString());
+            var message = Receiver.GetMessageBodyByIndex((Counter-countOfMessagesOnPage)+ListBox.SelectedIndex);
+          
+            Stream stream = new MemoryStream(System.Text.Encoding.Default.GetBytes(message));
+            MyWebBrowser.NavigateToStream(stream);
 
         }
-        
+
+        private void LoadWindow(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            EmailLabel.Content = mainWindow.EmailTextBox.Text;
+        }
+
     }
 }

@@ -28,8 +28,8 @@ namespace Email_Client
             password = _password;
 
             imapClient = new ImapClient();
-            imapClient.Connect(host, port, true);
-            imapClient.Authenticate(email, password);
+            imapClient.Connect(host, port, true) ;
+            imapClient.Authenticate( Encoding.UTF8,email, password);
         }
 
         private static string GetDataFromField(HeaderList headerList, string field)
@@ -44,18 +44,19 @@ namespace Email_Client
         }
 
         public static int GetCountMessages()
-        {
+        { 
             var inbox = imapClient.Inbox;
             inbox.Open(FolderAccess.ReadOnly);
             return inbox.Count;
         }
 
 
-        public static MimeEntity GetMessageBodyByIndex(int index)
+        public static string GetMessageBodyByIndex(int index)
         {
             var inbox = imapClient.Inbox;
             inbox.Open(FolderAccess.ReadOnly);
-            return  inbox.GetMessage(index).Body;
+            var a = inbox.GetMessage(index);
+           return  inbox.GetMessage(index).HtmlBody;
         }
         public static List<string> ReceiveHeaders(int firstIndex, int lastIndex)
         {
@@ -67,6 +68,7 @@ namespace Email_Client
                 var headerList = inbox.GetHeaders(i);
 
                 string headerString =
+                    $"{i}"+
                     $"{GetDataFromField(headerList, "Subject")}      " +
                     $"{GetDataFromField(headerList, "From")}      " +
                     $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
