@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using MimeKit;
 using mshtml;
@@ -38,18 +40,21 @@ namespace Email_Client
         
         private void LoadListBox(object sender, RoutedEventArgs e)
         {
-            CountMessages = Receiver.GetCountMessages();
+            
+            GetReceivedMessages();
+            RecievedMessagesButton.Background=Brushes.LightGray;
+        }
 
+        private void GetReceivedMessages()
+        {
+            CountMessages = Receiver.GetCountMessages();
             List<string> listOfMessages = Receiver.ReceiveHeaders(0, Counter);
             for (int i = 0; i < listOfMessages.Count && i < Counter; i++)
                 ListBox.Items.Add(listOfMessages[i]);
             PageNumberLabel.Content = "1";
             ComeBackButton.Visibility = Visibility.Hidden;
-            
         }
-        
-
-        //пересмотреть клики на кнопки
+      
         private void LeftArrowClick(object sender, RoutedEventArgs e)
         {
            
@@ -92,7 +97,7 @@ namespace Email_Client
             else if (Counter!= CountMessages)
             {
                 ListBox.Items.Clear();
-                List<string> listOfMessages = Receiver.ReceiveHeaders(Counter, Counter + CountMessages % Counter);
+                List<string> listOfMessages =  Receiver.ReceiveHeaders(Counter, Counter + CountMessages % Counter);
                 for (int i = 0; i < listOfMessages.Count; i++)
                     ListBox.Items.Add(listOfMessages[i]);
                 Counter += CountMessages % Counter;
@@ -120,16 +125,41 @@ namespace Email_Client
             PageNumberLabel.Visibility = Visibility.Hidden;
             LeftArrowButton.Visibility = Visibility.Hidden;
             RightArrowButton.Visibility = Visibility.Hidden;
-            var message = Receiver.GetMessageBodyByIndex((Counter-countOfMessagesOnPage)+ListBox.SelectedIndex);
-            Stream stream = new MemoryStream(System.Text.Encoding.Default.GetBytes(message));
+            var message = Receiver.GetMessageByIndex((Counter-countOfMessagesOnPage)+ListBox.SelectedIndex);
+            Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
-
         }
-
         private void LoadWindow(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow();
             EmailLabel.Content = mainWindow.EmailTextBox.Text;
+        }
+        
+       
+        private void GetSentMessages()
+        {
+            //CountMessages = Receiver.GetCountMessages();
+            List<string> listOfMessages =  Receiver.jhgf();
+            for (int i = 0; i < listOfMessages.Count; i++)
+                ListBox.Items.Add(listOfMessages[i]);
+            PageNumberLabel.Content = "1";
+            ComeBackButton.Visibility = Visibility.Hidden;
+           
+            
+        }
+        private void ReceivedMessagesClick(object sender, RoutedEventArgs e)
+        {
+            ListBox.Items.Clear();
+            RecievedMessagesButton.Background=Brushes.LightGray;
+            SentMessagesButton.Background=Brushes.Turquoise;
+            GetReceivedMessages();
+        }
+        private void SentMessagesClick(object sender, RoutedEventArgs e)
+        {
+            ListBox.Items.Clear();
+            SentMessagesButton.Background=Brushes.LightGray;
+            RecievedMessagesButton.Background=Brushes.Turquoise;
+            GetSentMessages();
         }
 
     }

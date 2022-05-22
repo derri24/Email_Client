@@ -68,7 +68,7 @@
             </Button.Resources>
         </Button>
         
-        <Button Content="Входящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise">
+        <Button Content="Входящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise" Name="RecievedMessagesButton" Click="ReceivedMessagesClick">
             <Button.RenderTransform>
                 <TranslateTransform X="-420" Y="-210" />
             </Button.RenderTransform>
@@ -78,7 +78,7 @@
                 </Style>
             </Button.Resources>
         </Button>  
-        <Button Content="Исходящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise">
+        <Button Content="Исходящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise" Name="SentMessagesButton" Click="SentMessagesClick">
             <Button.RenderTransform>
                 <TranslateTransform X="-420" Y="-175" />
             </Button.RenderTransform>

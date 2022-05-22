@@ -14,7 +14,7 @@ namespace Email_Client
         private static int port;
 
 
-        public static void Authorization(string _host, int _port, string _email, string _password)
+        public static void Authorization(string _host, int _port, string _email, string _password, bool _useSsl)
         {
             host = _host;
             port = _port;
@@ -22,7 +22,7 @@ namespace Email_Client
             password = _password;
 
             smtpClient = new SmtpClient();
-            smtpClient.Connect(host, port, false);
+            smtpClient.Connect(host, port, _useSsl);
             smtpClient.Authenticate(email, password);
         }
 

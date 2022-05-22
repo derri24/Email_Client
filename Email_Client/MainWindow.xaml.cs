@@ -21,7 +21,7 @@ namespace Email_Client
                 try
                 {
                     Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text),
-                        EmailTextBox.Text, PasswordTextBox.Password);
+                        EmailTextBox.Text, PasswordTextBox.Password,(bool)Ssl.IsChecked);
                     
                     ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
                     receiveMessageWindow.ShowDialog();

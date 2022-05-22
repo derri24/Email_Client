@@ -94,7 +94,6 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="Message.cs" />
         <Compile Include="ReceiveMessageWindow.xaml.cs">
           <DependentUpon>ReceiveMessageWindow.xaml</DependentUpon>
         </Compile>

@@ -33,7 +33,7 @@ namespace Email_Client
                 try
                 {
                     Sender.Authorization(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text),
-                        mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password);
+                        mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password,(bool)Ssl.IsChecked);
                     host = SendHostTextBox.Text;
                     port = SendPortTextBox.Text;
                     MessageBox.Show("Данные успешно сохранены!");

@@ -38,7 +38,7 @@ namespace Email_Client
                 {
                     Sender.Authorization(settingsWindow.SendHostTextBox.Text,
                         Convert.ToInt32(settingsWindow.SendPortTextBox.Text), mainWindow.EmailTextBox.Text,
-                        mainWindow.PasswordTextBox.Password);
+                        mainWindow.PasswordTextBox.Password,(bool)settingsWindow.Ssl.IsChecked);
 
                     Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, MessageTextBox.Text, listOfPath);
                     MessageBox.Show("Сообщение успешно отправлено!");
