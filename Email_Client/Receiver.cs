@@ -36,9 +36,7 @@ namespace Email_Client
         {
             for (int i = 0; i < headerList.Count; i++)
                 if (headerList[i].Field == field)
-                {
                     return headerList[i].Value;
-                }
 
             return "";
         }
@@ -49,14 +47,14 @@ namespace Email_Client
             inbox.Open(FolderAccess.ReadOnly);
             return inbox.Count;
         }
-
-
+        
         public static string GetMessageBodyByIndex(int index)
         {
             var inbox = imapClient.Inbox;
             inbox.Open(FolderAccess.ReadOnly);
             var a = inbox.GetMessage(index);
            return  inbox.GetMessage(index).HtmlBody;
+           
         }
         public static List<string> ReceiveHeaders(int firstIndex, int lastIndex)
         {
@@ -66,7 +64,11 @@ namespace Email_Client
             for (int i = firstIndex; i < lastIndex; i++)
             {
                 var headerList = inbox.GetHeaders(i);
-
+                Message message = new Message(
+                    GetDataFromField(headerList, "Subject"),
+                    GetDataFromField(headerList, "From"),
+                    GetDataFromField(headerList, "Date").Split('+')[0]);
+                
                 string headerString =
                     $"{i}"+
                     $"{GetDataFromField(headerList, "Subject")}      " +
@@ -74,7 +76,6 @@ namespace Email_Client
                     $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
                 listOfMessages.Add(headerString);
             }
-
             return listOfMessages;
         }
 

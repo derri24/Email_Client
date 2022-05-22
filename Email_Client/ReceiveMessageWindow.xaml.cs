@@ -32,8 +32,8 @@ namespace Email_Client
             settingsWindow.ShowDialog();
         }
 
-        private const int countOfMessagesOnPage = 3;
-        private int Counter = 3;
+        private const int countOfMessagesOnPage = 24;
+        private int Counter = 24;
         private int Number = 1;
         
         private void LoadListBox(object sender, RoutedEventArgs e)
@@ -112,7 +112,7 @@ namespace Email_Client
             RightArrowButton.Visibility = Visibility.Visible;
         }
         
-        private void ListBoxOnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ItemDoubleClick(object sender, MouseButtonEventArgs e)
         {
             MyWebBrowser.Visibility = Visibility.Visible;
             ComeBackButton.Visibility = Visibility.Visible;
@@ -121,7 +121,6 @@ namespace Email_Client
             LeftArrowButton.Visibility = Visibility.Hidden;
             RightArrowButton.Visibility = Visibility.Hidden;
             var message = Receiver.GetMessageBodyByIndex((Counter-countOfMessagesOnPage)+ListBox.SelectedIndex);
-          
             Stream stream = new MemoryStream(System.Text.Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
 
