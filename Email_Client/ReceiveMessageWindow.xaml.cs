@@ -41,8 +41,12 @@ namespace Email_Client
 
         private void LoadListBox(object sender, RoutedEventArgs e)
         {
+            Receiver.TypeMessage = 1; 
+            CountMessages = Receiver.GetCountMessages();
+            SentMessagesButton.Content = $"Исходящие: {CountMessages}";
             Receiver.TypeMessage = 0; //recei
             CountMessages = Receiver.GetCountMessages();
+            RecievedMessagesButton.Content = $"Входящие: {CountMessages}";
             GetMessages();
             RecievedMessagesButton.Background = Brushes.LightGray;
         }
@@ -103,6 +107,32 @@ namespace Email_Client
             ShowListBoxOfMessages();
         }
 
+        private void UpdateButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Receiver.CloseConnection();
+                MainWindow mainWindow = new MainWindow();
+                Receiver.Authorization(mainWindow.ReceiptHostTextBox.Text, Convert.ToInt32(mainWindow.ReceiptPortTextBox.Text),
+                    mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password,(bool)mainWindow.Ssl.IsChecked);
+                CountMessages = Receiver.GetCountMessages();
+                if (CountMessages<countOfMessagesOnPage)
+                    Counter = CountMessages;
+                else
+                    Counter = countOfMessagesOnPage;
+                if (Receiver.TypeMessage==0)
+                    RecievedMessagesButton.Content = $"Входящие: {CountMessages}";
+                else
+                    SentMessagesButton.Content = $"Исходящие: {CountMessages}";
+                ListBox.Items.Clear();
+                GetMessages();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка переподключения!\nПроверьте подключение к интернету!");
+            }
+        }
+        
         private void ShowListBoxOfMessages()
         {
             MyWebBrowser.Visibility = Visibility.Hidden;
@@ -122,10 +152,14 @@ namespace Email_Client
             LeftArrowButton.Visibility = Visibility.Hidden;
             RightArrowButton.Visibility = Visibility.Hidden;
             int index;
+            int i;
             if (Counter < countOfMessagesOnPage)
                 index = ListBox.SelectedIndex;
             else
-                index = (Counter - countOfMessagesOnPage) + ListBox.SelectedIndex;
+            {
+                index=(Number-1)*countOfMessagesOnPage+ListBox.SelectedIndex;
+            }
+                
 
             var message = Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
@@ -153,7 +187,7 @@ namespace Email_Client
 
         private void ReceivedMessagesClick(object sender, RoutedEventArgs e)
         {
-            Counter = 24;
+            Counter = countOfMessagesOnPage;
             ShowListBoxOfMessages();
             ListBox.Items.Clear();
             RecievedMessagesButton.Background = Brushes.LightGray;
@@ -167,7 +201,7 @@ namespace Email_Client
 
         private void SentMessagesClick(object sender, RoutedEventArgs e)
         {
-            Counter = 24;
+            Counter = countOfMessagesOnPage;
             ShowListBoxOfMessages();
             ListBox.Items.Clear();
             SentMessagesButton.Background = Brushes.LightGray;

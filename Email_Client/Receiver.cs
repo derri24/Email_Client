@@ -33,6 +33,7 @@ namespace Email_Client
             imapClient.Connect(host, port, _Ssl);
             imapClient.Authenticate(Encoding.UTF8, email, password);
             mailFolder = imapClient.Inbox;
+
         }
 
         private static string GetDataFromField(HeaderList headerList, string field)
@@ -58,9 +59,10 @@ namespace Email_Client
         {
             mailFolder.Open(FolderAccess.ReadOnly);
             var data = mailFolder.GetHeaders(index);
-            string message = $"Тема: {GetDataFromField(data, "Subject")}<br>" +
-                             $"{GetDataFromField(data, "From")}  " +
-                             $"{GetDataFromField(data, "Date").Split('+')[0]}<br>" +
+            string message = $"<b>Тема:</b> {GetDataFromField(data, "Subject")}<br>" +
+                             $"<b>От:</b> {GetDataFromField(data, "From")}<br>" +
+                             $"<b>Кому:</b> {GetDataFromField(data, "To")}<br>" +
+                             $"<b>Дата:</b> {GetDataFromField(data, "Date").Split('+')[0]}<br>" +
                              $"<br>{mailFolder.GetMessage(index).HtmlBody}";
             return message;
         }

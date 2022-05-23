@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
 
@@ -31,9 +32,7 @@ namespace Email_Client
         {
             var builder = new BodyBuilder();
             for (int i = 0; i < listOfString.Count; i++)
-            {
                 builder.Attachments.Add(listOfString[i]);
-            }
             builder.TextBody = message;
             return builder;
         }
@@ -49,16 +48,16 @@ namespace Email_Client
             return emailMessage;
         }
 
-        public static void SendMessage(string recipient, string subject, string message,  List<string> listOfString)
+        public static void SendMessage(string recipient, string subject, string message, List<string> listOfString)
         {
             MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);
             smtpClient.Send(emailMessage);
         }
-        
+
         public static void CloseConnection()
         {
-            if (smtpClient != null) 
-            smtpClient.Disconnect(true);
+            if (smtpClient != null)
+                smtpClient.Disconnect(true);
         }
     }
 }

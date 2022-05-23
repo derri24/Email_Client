@@ -24,13 +24,13 @@ namespace Email_Client
                 string path = dialog.FileName;
                 listOfPath.Add(path);
             }
-                
-            AttachmentBtn.Background = Brushes.LightGray;
+            if (listOfPath.Count > 0)
+                AttachmentBtn.Background = Brushes.LightGray;
         }
 
         private void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ReceiverTextBox.Text != "" && MessageTextBox.Text != "")
+            if (ReceiverTextBox.Text != "")
             {
                 MainWindow mainWindow = new MainWindow();
                 SettingsWindow settingsWindow = new SettingsWindow();
@@ -38,7 +38,7 @@ namespace Email_Client
                 {
                     Sender.Authorization(settingsWindow.SendHostTextBox.Text,
                         Convert.ToInt32(settingsWindow.SendPortTextBox.Text), mainWindow.EmailTextBox.Text,
-                        mainWindow.PasswordTextBox.Password,(bool)settingsWindow.Ssl.IsChecked);
+                        mainWindow.PasswordTextBox.Password, (bool) settingsWindow.Ssl.IsChecked);
 
                     Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, MessageTextBox.Text, listOfPath);
                     MessageBox.Show("Сообщение успешно отправлено!");
@@ -52,7 +52,7 @@ namespace Email_Client
             }
             else
             {
-                MessageBox.Show("Заполненение полей <Получатель>, <Текст сообщения> обязательно!");
+                MessageBox.Show("Заполненение поля <Получатель> обязательно!");
             }
         }
     }

@@ -57,7 +57,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Content="🔃" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="LoadListBox">
+        <Button Content="🔃" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="UpdateButtonClick">
             <Button.RenderTransform>
                 <TranslateTransform X="-328" Y="-260" />
             </Button.RenderTransform>
