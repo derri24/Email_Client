@@ -8,19 +8,21 @@ using MailKit.Net.Imap;
 using MimeKit;
 
 
-
 namespace Email_Client
 {
     public static class Receiver
     {
+        public static byte TypeMessage;
         private static ImapClient imapClient;
+        private static IMailFolder mailFolder;
 
         private static string email;
         private static string password;
         private static string host;
         private static int port;
-        
-        public static void Authorization(string _host, int _port, string _email, string _password,bool _Ssl)
+
+
+        public static void Authorization(string _host, int _port, string _email, string _password, bool _Ssl)
         {
             host = _host;
             port = _port;
@@ -28,8 +30,9 @@ namespace Email_Client
             password = _password;
 
             imapClient = new ImapClient();
-            imapClient.Connect(host, port, _Ssl) ;
-            imapClient.Authenticate( Encoding.UTF8,email, password);
+            imapClient.Connect(host, port, _Ssl);
+            imapClient.Authenticate(Encoding.UTF8, email, password);
+            mailFolder = imapClient.Inbox;
         }
 
         private static string GetDataFromField(HeaderList headerList, string field)
@@ -41,62 +44,48 @@ namespace Email_Client
             return "(Без темы)";
         }
 
+        //
         public static int GetCountMessages()
-        { 
-            var inbox = imapClient.Inbox;
-            inbox.Open(FolderAccess.ReadOnly);
-            return inbox.Count;
+        { if (TypeMessage == 0)
+                mailFolder = imapClient.Inbox; //receiv
+            else if (TypeMessage == 1)
+                mailFolder = imapClient.GetFolder(SpecialFolder.Sent); //sen
+            mailFolder.Open(FolderAccess.ReadOnly);
+            return mailFolder.Count;
         }
+
         public static string GetMessageByIndex(int index)
         {
-            var inbox = imapClient.Inbox;
-            inbox.Open(FolderAccess.ReadOnly);
-            var data = inbox.GetHeaders(index);
-            string message = $"Тема: {GetDataFromField(data, "Subject")}<br>"+
-                             $"{GetDataFromField(data, "From")}  "+
+            mailFolder.Open(FolderAccess.ReadOnly);
+            var data = mailFolder.GetHeaders(index);
+            string message = $"Тема: {GetDataFromField(data, "Subject")}<br>" +
+                             $"{GetDataFromField(data, "From")}  " +
                              $"{GetDataFromField(data, "Date").Split('+')[0]}<br>" +
-                             $"<br>{inbox.GetMessage(index).HtmlBody}";
-            return  message;
+                             $"<br>{mailFolder.GetMessage(index).HtmlBody}";
+            return message;
         }
-        public static  List<string>  ReceiveHeaders(int firstIndex, int lastIndex)
+
+        public static List<string> GetHeaders(int firstIndex, int lastIndex)
         {
             List<string> listOfMessages = new List<string>();
-            var inbox = imapClient.Inbox;
-            inbox.Open(FolderAccess.ReadOnly);
+            //var inbox = imapClient.Inbox;
+            if (TypeMessage == 0)
+                mailFolder = imapClient.Inbox; //receiv
+            else if (TypeMessage == 1)
+                mailFolder = imapClient.GetFolder(SpecialFolder.Sent); //sen
+            mailFolder.Open(FolderAccess.ReadOnly);
             for (int i = firstIndex; i < lastIndex; i++)
             {
-                var headerList = inbox.GetHeaders(i);
+                var headerList = mailFolder.GetHeaders(i);
 
                 string headerString =
-                    $"{i}"+
+                    $"{i}" +
                     $"{GetDataFromField(headerList, "Subject")}      " +
                     $"{GetDataFromField(headerList, "From")}      " +
                     $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
                 listOfMessages.Add(headerString);
             }
-            return listOfMessages;
-        }
-        
-        
-        public static List<string>  jhgf()
-        {
-            List<string> listOfMessages = new List<string>();
-           
-            var inbox = imapClient.GetFolder(SpecialFolder.Sent);
-            inbox.Open(FolderAccess.ReadOnly);
-            for (int i = 1; i < 3; i++)
-            {
-                var headerList = inbox.GetHeaders(i);
 
-                string headerString =
-                    $"{i}"+
-                    $"{GetDataFromField(headerList, "Subject")}      " +
-                    $"{GetDataFromField(headerList, "From")}      " +
-                    $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
-                listOfMessages.Add(headerString);
-              
-            }
-            
             return listOfMessages;
         }
 
