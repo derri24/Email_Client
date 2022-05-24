@@ -11,19 +11,16 @@ namespace Email_Client
         {
             InitializeComponent();
         }
-
-
-        private string host;
-        private string port;
-
-        // private void Load(object sender, RoutedEventArgs e)
-        // {
-        //     if (host != "" && port != "")
-        //     {
-        //         SendHostTextBox.Text = host;
-        //         SendPortTextBox.Text = port;
-        //     }
-        // }
+        
+        private void Load(object sender, RoutedEventArgs e)
+        {
+            if (SettingsStorage.Host != null && SettingsStorage.Port != null)
+            {
+                SendHostTextBox.Text = SettingsStorage.Host;
+                SendPortTextBox.Text = SettingsStorage.Port;
+                Ssl.IsChecked = SettingsStorage.Ssl;
+            }
+        }
 
         private void SaveSettings_ButtonClick(object sender, RoutedEventArgs e)
         {
@@ -34,8 +31,9 @@ namespace Email_Client
                 {
                     Sender.Authorization(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text),
                         mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password,(bool)Ssl.IsChecked);
-                    host = SendHostTextBox.Text;
-                    port = SendPortTextBox.Text;
+                    SettingsStorage.Host = SendHostTextBox.Text;
+                    SettingsStorage.Port = SendPortTextBox.Text;
+                    SettingsStorage.Ssl = (bool)Ssl.IsChecked;
                     MessageBox.Show("Данные успешно сохранены!");
                     Close();
                 }

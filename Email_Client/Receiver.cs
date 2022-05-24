@@ -55,6 +55,11 @@ namespace Email_Client
             return mailFolder.Count;
         }
 
+        public static IEnumerable<MimeEntity> GetAttachments(int index)
+        {
+            mailFolder.Open(FolderAccess.ReadOnly);
+            return mailFolder.GetMessage(index).Attachments;
+        }
         public static string GetMessageByIndex(int index)
         {
             mailFolder.Open(FolderAccess.ReadOnly);
@@ -89,8 +94,6 @@ namespace Email_Client
                 
                 listOfMessages.Add(headerString);
             }
-
-            listOfMessages.Reverse();
             return listOfMessages;
         }
 

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using MimeKit;
 using mshtml;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Email_Client
 {
@@ -34,6 +36,7 @@ namespace Email_Client
             settingsWindow.ShowDialog();
         }
 
+
 //if < 24 ,,counter - 24>0 индекс получения и стрелки 
         private const int countOfMessagesOnPage = 24;
         private int Counter = 24;
@@ -41,7 +44,7 @@ namespace Email_Client
 
         private void LoadListBox(object sender, RoutedEventArgs e)
         {
-            Receiver.TypeMessage = 1; 
+            Receiver.TypeMessage = 1;
             CountMessages = Receiver.GetCountMessages();
             SentMessagesButton.Content = $"Исходящие: {CountMessages}";
             Receiver.TypeMessage = 0; //recei
@@ -111,16 +114,18 @@ namespace Email_Client
         {
             try
             {
+                ShowListBoxOfMessages();
                 Receiver.CloseConnection();
                 MainWindow mainWindow = new MainWindow();
-                Receiver.Authorization(mainWindow.ReceiptHostTextBox.Text, Convert.ToInt32(mainWindow.ReceiptPortTextBox.Text),
-                    mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password,(bool)mainWindow.Ssl.IsChecked);
+                Receiver.Authorization(mainWindow.ReceiptHostTextBox.Text,
+                    Convert.ToInt32(mainWindow.ReceiptPortTextBox.Text),
+                    mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password, (bool) mainWindow.Ssl.IsChecked);
                 CountMessages = Receiver.GetCountMessages();
-                if (CountMessages<countOfMessagesOnPage)
+                if (CountMessages < countOfMessagesOnPage)
                     Counter = CountMessages;
                 else
                     Counter = countOfMessagesOnPage;
-                if (Receiver.TypeMessage==0)
+                if (Receiver.TypeMessage == 0)
                     RecievedMessagesButton.Content = $"Входящие: {CountMessages}";
                 else
                     SentMessagesButton.Content = $"Исходящие: {CountMessages}";
@@ -132,34 +137,73 @@ namespace Email_Client
                 MessageBox.Show("Ошибка переподключения!\nПроверьте подключение к интернету!");
             }
         }
-        
+
         private void ShowListBoxOfMessages()
         {
             MyWebBrowser.Visibility = Visibility.Hidden;
             ComeBackButton.Visibility = Visibility.Hidden;
+            SaveAttachmentsBtn.Visibility = Visibility.Hidden;
             ListBox.Visibility = Visibility.Visible;
             PageNumberLabel.Visibility = Visibility.Visible;
             LeftArrowButton.Visibility = Visibility.Visible;
             RightArrowButton.Visibility = Visibility.Visible;
         }
 
+        int index;
         private void ItemDoubleClick(object sender, MouseButtonEventArgs e)
         {
             MyWebBrowser.Visibility = Visibility.Visible;
             ComeBackButton.Visibility = Visibility.Visible;
+            SaveAttachmentsBtn.Visibility = Visibility.Visible;
             ListBox.Visibility = Visibility.Hidden;
             PageNumberLabel.Visibility = Visibility.Hidden;
             LeftArrowButton.Visibility = Visibility.Hidden;
             RightArrowButton.Visibility = Visibility.Hidden;
-            int index;
-            int i;
+          
             if (Counter < countOfMessagesOnPage)
                 index = ListBox.SelectedIndex;
             else
-                index=(Number-1)*countOfMessagesOnPage+ListBox.SelectedIndex;
+                index = (Number - 1) * countOfMessagesOnPage + ListBox.SelectedIndex;
             var message = Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
+        }
+
+        private void SaveAttachmentsClick(object sender, RoutedEventArgs e)
+        {
+
+
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            var attachments = Receiver.GetAttachments(index);
+            if (attachments.Count()>0)
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    foreach (MimeEntity attachment in attachments)
+                    {
+                        using (var stream = File.Create($"{dialog.SelectedPath}\\{attachment.ContentDisposition.FileName}"))
+                        {
+                            if (attachment is MessagePart)
+                            {
+                                var part = (MessagePart) attachment;
+                                part.Message.WriteTo(stream);
+                            }
+                            else
+                            {
+                                var part = (MimePart) attachment;
+                                part.Content.DecodeTo(stream);
+                            }
+                        }
+                    }
+
+                    MessageBox.Show("Вложения успешно скачаны!");
+                }  
+            }
+            else
+            {
+                MessageBox.Show("Вложений нет!");
+            }
+            
         }
 
         private void LoadWindow(object sender, RoutedEventArgs e)
