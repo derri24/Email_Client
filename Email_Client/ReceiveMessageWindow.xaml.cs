@@ -168,6 +168,7 @@ namespace Email_Client
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
         }
+        
 
         private void SaveAttachmentsClick(object sender, RoutedEventArgs e)
         {
