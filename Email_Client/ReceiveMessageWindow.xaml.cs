@@ -156,11 +156,7 @@ namespace Email_Client
             if (Counter < countOfMessagesOnPage)
                 index = ListBox.SelectedIndex;
             else
-            {
                 index=(Number-1)*countOfMessagesOnPage+ListBox.SelectedIndex;
-            }
-                
-
             var message = Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);

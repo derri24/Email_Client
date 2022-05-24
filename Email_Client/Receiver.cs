@@ -75,6 +75,7 @@ namespace Email_Client
                 mailFolder = imapClient.Inbox; //receiv
             else if (TypeMessage == 1)
                 mailFolder = imapClient.GetFolder(SpecialFolder.Sent); //sen
+         
             mailFolder.Open(FolderAccess.ReadOnly);
             for (int i = firstIndex; i < lastIndex; i++)
             {
@@ -85,9 +86,11 @@ namespace Email_Client
                     $"{GetDataFromField(headerList, "Subject")}      " +
                     $"{GetDataFromField(headerList, "From")}      " +
                     $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
+                
                 listOfMessages.Add(headerString);
             }
 
+            listOfMessages.Reverse();
             return listOfMessages;
         }
 

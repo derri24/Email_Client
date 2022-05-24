@@ -33,7 +33,7 @@ namespace Email_Client
             var builder = new BodyBuilder();
             for (int i = 0; i < listOfString.Count; i++)
                 builder.Attachments.Add(listOfString[i]);
-            builder.TextBody = message;
+            builder.HtmlBody = message;
             return builder;
         }
 
