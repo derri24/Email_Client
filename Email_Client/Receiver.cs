@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using MailKit;
 using MailKit.Net.Imap;
+using MailKit.Search;
 using MimeKit;
 
 
@@ -47,6 +48,20 @@ namespace Email_Client
             return "(Без темы)";
         }
 
+        public static IList<string> GetFoundHeaders(string searchString)
+        {
+            var listOfMessages = new List<string>();
+            var listOfUniqueIds =
+                _mailFolder.Search(SearchQuery.FromContains(searchString).Or(SearchQuery.SubjectContains(searchString)));
+            foreach (var uniqueId in listOfUniqueIds)
+            {
+                var headerList = _mailFolder.GetHeaders(uniqueId);
+                listOfMessages.Add(GetHeaderString(headerList, 0));
+            }
+
+            return listOfMessages;
+        }
+
         public static void Update()
         {
             CloseConnection();
@@ -82,6 +97,16 @@ namespace Email_Client
             return message;
         }
 
+
+        private static string GetHeaderString(HeaderList headerList, int i)
+        {
+            return $"{i}" +
+                   $"{GetDataFromField(headerList, "Subject")}      " +
+                   $"{GetDataFromField(headerList, "From")}      " +
+                   $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
+        }
+
+
         public static List<string> GetHeaders(int firstIndex, int lastIndex)
         {
             List<string> listOfMessages = new List<string>();
@@ -96,13 +121,8 @@ namespace Email_Client
             {
                 var headerList = _mailFolder.GetHeaders(i);
 
-                string headerString =
-                    $"{i}" +
-                    $"{GetDataFromField(headerList, "Subject")}      " +
-                    $"{GetDataFromField(headerList, "From")}      " +
-                    $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
 
-                listOfMessages.Add(headerString);
+                listOfMessages.Add(GetHeaderString(headerList, i));
             }
 
             return listOfMessages;

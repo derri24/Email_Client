@@ -37,7 +37,7 @@
                 </Style>
             </TextBox.Resources>
         </TextBox>
-        <Button Content="🔎" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise">
+        <Button Content="🔎" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="SearchButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="505" Y="-310" />
             </Button.RenderTransform>

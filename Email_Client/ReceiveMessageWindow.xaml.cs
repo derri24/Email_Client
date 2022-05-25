@@ -229,6 +229,7 @@ namespace Email_Client
             if (countMessages < counter)
                 counter = countMessages;
             GetMessages();
+          
         }
 
         private void SentMessagesButton_Click(object sender, RoutedEventArgs e)
@@ -243,6 +244,14 @@ namespace Email_Client
             if (countMessages < counter)
                 counter = countMessages;
             GetMessages();
+        }
+        
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessagesListBox.Items.Clear();
+            var a = Receiver.GetFoundHeaders("Re: CHECK");
+            for (int i = 0; i < a.Count; i++)
+                MessagesListBox.Items.Add(a[i]);
         }
     }
 }
