@@ -12,15 +12,7 @@ namespace Email_Client
         private static string _email;
         private static string _password;
         private static bool _isConnected;
-        public static bool IsConnected {
-            get
-            {
-                return _isConnected;
-            }
-        }
-
-        
-
+        public static bool IsConnected => _isConnected;
 
         public static BodyBuilder CreateMessageContent(string message, List<string> listOfString)
         {
@@ -42,22 +34,20 @@ namespace Email_Client
             return emailMessage;
         }
 
-        public static void Authenticate(string email,string password)
+        public static void Authenticate(string email, string password)
         {
             _email = email;
             _password = password;
         }
+
         public static void Connect(string host, int port, bool ssl)
         {
-
             _smtpClient = new SmtpClient();
             _smtpClient.Connect(host, port, ssl);
             _smtpClient.Authenticate(_email, _password);
             _isConnected = true;
-
         }
-        
-        
+
         public static void SendMessage(string recipient, string subject, string message, List<string> listOfString)
         {
             MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);

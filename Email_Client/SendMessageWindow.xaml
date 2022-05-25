@@ -52,7 +52,7 @@
         </Label>
 
         <Button Content="𝐁" FontSize="24" Width="26" Height="30" FontFamily="Mistral" Background="Turquoise"
-                Click="BoldButtonClick">
+                Click="BoldButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="143" Y="-75" />
             </Button.RenderTransform>
@@ -63,7 +63,7 @@
             </Button.Resources>
         </Button>
         <Button Content="𝐼" FontSize="24" Width="26" Height="30" FontFamily="Mistral" Background="Turquoise"
-                Click="CursiveButtonClick">
+                Click="CursiveButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="173" Y="-75" />
             </Button.RenderTransform>
@@ -74,7 +74,7 @@
             </Button.Resources>
         </Button>
         <Button Content="🔗" FontSize="17" Width="26" Height="30" FontFamily="Mistral" Background="Turquoise"
-                Click="LinkButtonClick">
+                Click="LinkButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="203" Y="-75" />
             </Button.RenderTransform>

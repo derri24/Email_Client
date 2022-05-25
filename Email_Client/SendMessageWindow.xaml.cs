@@ -74,17 +74,17 @@ namespace Email_Client
             }
         }
 
-        private void BoldButtonClick(object sender, RoutedEventArgs e)
+        private void BoldButton_Click(object sender, RoutedEventArgs e)
         {
             MessageTextBox.Text += "<b>Введите текст тут</b>";
         }
 
-        private void CursiveButtonClick(object sender, RoutedEventArgs e)
+        private void CursiveButton_Click(object sender, RoutedEventArgs e)
         {
             MessageTextBox.Text += "<i>Введите текст тут</i>";
         }
 
-        private void LinkButtonClick(object sender, RoutedEventArgs e)
+        private void LinkButton_Click(object sender, RoutedEventArgs e)
         {
             MessageTextBox.Text += "<a>Введите ссылку тут</a>";
         }

@@ -57,7 +57,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Content="🔃" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="UpdateButtonClick">
+        <Button Content="🔃" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="UpdateButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-328" Y="-260" />
             </Button.RenderTransform>
@@ -68,7 +68,7 @@
             </Button.Resources>
         </Button>
         
-        <Button Content="Входящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise" Name="RecievedMessagesButton" Click="ReceivedMessagesClick">
+        <Button Content="Входящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise" Name="ReceivedMessagesBtn" Click="ReceivedMessagesButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-420" Y="-210" />
             </Button.RenderTransform>
@@ -78,7 +78,7 @@
                 </Style>
             </Button.Resources>
         </Button>  
-        <Button Content="Исходящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise" Name="SentMessagesButton" Click="SentMessagesClick">
+        <Button Content="Исходящие" FontSize="26" Width="220" Height="30" FontFamily="Mistral" Background="Turquoise" Name="SentMessagesBtn" Click="SentMessagesButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-420" Y="-175" />
             </Button.RenderTransform>
@@ -89,7 +89,7 @@
             </Button.Resources>
         </Button>  
    
-        <ListBox Background="White" Width="810" Height="570" Margin="5" FontFamily="Century" FontSize="16" Name="ListBox"  MouseDoubleClick ="ItemDoubleClick">
+        <ListBox Background="White" Width="810" Height="570" Margin="5" FontFamily="Century" FontSize="16" Name="MessagesListBox"  MouseDoubleClick ="ListBoxItemDouble_Click">
             <ListBox.RenderTransform>
                 <TranslateTransform X="117" Y="6" />
             </ListBox.RenderTransform>
@@ -104,7 +104,7 @@
        
         
         
-        <Button Content="↫" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Name="ComeBackButton" Click="ComeBackClick">
+        <Button Content="↫" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Name="ComeBackBtn" Click="ComeBackButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-328" Y="275" />
             </Button.RenderTransform>
@@ -115,7 +115,7 @@
             </Button.Resources>
         </Button>
         
-        <Button Content="◀" FontSize="28" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="LeftArrowClick" Name="LeftArrowButton">
+        <Button Content="◀" FontSize="28" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="LeftArrowButton_Click" Name="LeftArrowBtn">
             <Button.RenderTransform>
                 <TranslateTransform X="35" Y="325" />
             </Button.RenderTransform>
@@ -131,7 +131,7 @@
                 <TranslateTransform X="670" Y="660" />
             </Label.RenderTransform>
         </Label>
-        <Button Content="▶" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="RightArrowClick" Name="RightArrowButton">
+        <Button Content="▶" FontSize="22" Width="35" Height="35" FontFamily="Mistral" Background="Turquoise" Click="RightArrowButton_Click" Name="RightArrowBtn">
             <Button.RenderTransform>
                 <TranslateTransform X="185" Y="325" />
             </Button.RenderTransform>
@@ -142,10 +142,7 @@
             </Button.Resources>
         </Button>
         
-      
-           
-        
-        <Button Content="Скачать вложения" FontSize="22" Width="170" Height="30" FontFamily="Mistral" Background="Turquoise" Click="SaveAttachmentsClick"  Visibility="Hidden" Name="SaveAttachmentsBtn" >
+        <Button Content="Скачать вложения" FontSize="22" Width="170" Height="30" FontFamily="Mistral" Background="Turquoise" Click="SaveAttachmentsButton_Click"  Visibility="Hidden" Name="SaveAttachmentsBtn" >
             <Button.RenderTransform>
                 <TranslateTransform X="395" Y="-260" />
             </Button.RenderTransform>

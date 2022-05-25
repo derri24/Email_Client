@@ -50,70 +50,70 @@ namespace Email_Client
             
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = Receiver.GetCountMessages();
-            SentMessagesButton.Content = $"Исходящие: {countMessages}";
+            SentMessagesBtn.Content = $"Исходящие: {countMessages}";
             Receiver.TypeMessage = MessageType.Received;
             countMessages = Receiver.GetCountMessages();
-            RecievedMessagesButton.Content = $"Входящие: {countMessages}";
+            ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
             GetMessages();
-            RecievedMessagesButton.Background = Brushes.LightGray;
+            ReceivedMessagesBtn.Background = Brushes.LightGray;
         }
 
-        private void LeftArrowClick(object sender, RoutedEventArgs e)
+        private void LeftArrowButton_Click(object sender, RoutedEventArgs e)
         {
             if (counter % CountOfMessagesOnPage == 0 && counter - CountOfMessagesOnPage > 0)
             {
-                ListBox.Items.Clear();
+                MessagesListBox.Items.Clear();
                 counter -= CountOfMessagesOnPage;
                 List<string> listOfMessages = Receiver.GetHeaders(counter - CountOfMessagesOnPage, counter);
                 for (int i = 0; i < listOfMessages.Count && i < counter; i++)
-                    ListBox.Items.Add(listOfMessages[i]);
+                    MessagesListBox.Items.Add(listOfMessages[i]);
                 number--;
                 PageNumberLabel.Content = number.ToString();
             }
             else if (counter % CountOfMessagesOnPage != 0 && counter - CountOfMessagesOnPage > 0)
             {
-                ListBox.Items.Clear();
+                MessagesListBox.Items.Clear();
                 List<string> listOfMessages = Receiver.GetHeaders(
                     counter - (counter % CountOfMessagesOnPage) - CountOfMessagesOnPage,
                     counter - (counter % CountOfMessagesOnPage));
                 for (int i = 0; i < listOfMessages.Count && i < counter; i++)
-                    ListBox.Items.Add(listOfMessages[i]);
+                    MessagesListBox.Items.Add(listOfMessages[i]);
                 counter -= counter % CountOfMessagesOnPage;
                 number--;
                 PageNumberLabel.Content = number.ToString();
             }
         }
 
-        private void RightArrowClick(object sender, RoutedEventArgs e)
+        private void RightArrowButton_Click(object sender, RoutedEventArgs e)
         {
             if (counter + CountOfMessagesOnPage <= countMessages)
             {
-                ListBox.Items.Clear();
+                MessagesListBox.Items.Clear();
                 List<string> listOfMessages = Receiver.GetHeaders(counter, counter + CountOfMessagesOnPage);
                 for (int i = 0; i < listOfMessages.Count; i++)
-                    ListBox.Items.Add(listOfMessages[i]);
+                    MessagesListBox.Items.Add(listOfMessages[i]);
                 counter += CountOfMessagesOnPage;
                 number++;
                 PageNumberLabel.Content = number.ToString();
             }
             else if (counter != countMessages)
             {
-                ListBox.Items.Clear();
+                MessagesListBox.Items.Clear();
                 List<string> listOfMessages = Receiver.GetHeaders(counter, counter + countMessages % counter);
                 for (int i = 0; i < listOfMessages.Count; i++)
-                    ListBox.Items.Add(listOfMessages[i]);
+                    MessagesListBox.Items.Add(listOfMessages[i]);
                 counter += countMessages % counter;
                 number++;
                 PageNumberLabel.Content = number.ToString();
             }
         }
 
-        private void ComeBackClick(object sender, RoutedEventArgs e)
+        private void ComeBackButton_Click(object sender, RoutedEventArgs e)
         {
             ShowListBoxOfMessages();
         }
 
-        private void UpdateButtonClick(object sender, RoutedEventArgs e)
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -125,10 +125,10 @@ namespace Email_Client
                 else
                     counter = CountOfMessagesOnPage;
                 if (Receiver.TypeMessage == MessageType.Received)
-                    RecievedMessagesButton.Content = $"Входящие: {countMessages}";
+                    ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
                 else
-                    SentMessagesButton.Content = $"Исходящие: {countMessages}";
-                ListBox.Items.Clear();
+                    SentMessagesBtn.Content = $"Исходящие: {countMessages}";
+                MessagesListBox.Items.Clear();
                 GetMessages();
             }
             catch
@@ -140,37 +140,37 @@ namespace Email_Client
         private void ShowListBoxOfMessages()
         {
             MyWebBrowser.Visibility = Visibility.Hidden;
-            ComeBackButton.Visibility = Visibility.Hidden;
+            ComeBackBtn.Visibility = Visibility.Hidden;
             SaveAttachmentsBtn.Visibility = Visibility.Hidden;
-            ListBox.Visibility = Visibility.Visible;
+            MessagesListBox.Visibility = Visibility.Visible;
             PageNumberLabel.Visibility = Visibility.Visible;
-            LeftArrowButton.Visibility = Visibility.Visible;
-            RightArrowButton.Visibility = Visibility.Visible;
+            LeftArrowBtn.Visibility = Visibility.Visible;
+            RightArrowBtn.Visibility = Visibility.Visible;
         }
 
     
 
-        private void ItemDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListBoxItemDouble_Click(object sender, MouseButtonEventArgs e)
         {
             MyWebBrowser.Visibility = Visibility.Visible;
-            ComeBackButton.Visibility = Visibility.Visible;
+            ComeBackBtn.Visibility = Visibility.Visible;
             SaveAttachmentsBtn.Visibility = Visibility.Visible;
-            ListBox.Visibility = Visibility.Hidden;
+            MessagesListBox.Visibility = Visibility.Hidden;
             PageNumberLabel.Visibility = Visibility.Hidden;
-            LeftArrowButton.Visibility = Visibility.Hidden;
-            RightArrowButton.Visibility = Visibility.Hidden;
+            LeftArrowBtn.Visibility = Visibility.Hidden;
+            RightArrowBtn.Visibility = Visibility.Hidden;
 
             if (counter < CountOfMessagesOnPage)
-                index = ListBox.SelectedIndex;
+                index = MessagesListBox.SelectedIndex;
             else
-                index = (number - 1) * CountOfMessagesOnPage + ListBox.SelectedIndex;
+                index = (number - 1) * CountOfMessagesOnPage + MessagesListBox.SelectedIndex;
             var message = Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
         }
 
 
-        private void SaveAttachmentsClick(object sender, RoutedEventArgs e)
+        private void SaveAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             var attachments = Receiver.GetAttachments(index);
@@ -212,18 +212,18 @@ namespace Email_Client
             List<string> listOfMessages;
             listOfMessages = Receiver.GetHeaders(0, counter);
             for (int i = 0; i < listOfMessages.Count && i < counter; i++)
-                ListBox.Items.Add(listOfMessages[i]);
+                MessagesListBox.Items.Add(listOfMessages[i]);
             PageNumberLabel.Content = "1";
-            ComeBackButton.Visibility = Visibility.Hidden;
+            ComeBackBtn.Visibility = Visibility.Hidden;
         }
 
-        private void ReceivedMessagesClick(object sender, RoutedEventArgs e)
+        private void ReceivedMessagesButton_Click(object sender, RoutedEventArgs e)
         {
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
-            ListBox.Items.Clear();
-            RecievedMessagesButton.Background = Brushes.LightGray;
-            SentMessagesButton.Background = Brushes.Turquoise;
+            MessagesListBox.Items.Clear();
+            ReceivedMessagesBtn.Background = Brushes.LightGray;
+            SentMessagesBtn.Background = Brushes.Turquoise;
             Receiver.TypeMessage = MessageType.Received;
             countMessages = Receiver.GetCountMessages();
             if (countMessages < counter)
@@ -231,13 +231,13 @@ namespace Email_Client
             GetMessages();
         }
 
-        private void SentMessagesClick(object sender, RoutedEventArgs e)
+        private void SentMessagesButton_Click(object sender, RoutedEventArgs e)
         {
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
-            ListBox.Items.Clear();
-            SentMessagesButton.Background = Brushes.LightGray;
-            RecievedMessagesButton.Background = Brushes.Turquoise;
+            MessagesListBox.Items.Clear();
+            SentMessagesBtn.Background = Brushes.LightGray;
+            ReceivedMessagesBtn.Background = Brushes.Turquoise;
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = Receiver.GetCountMessages();
             if (countMessages < counter)
