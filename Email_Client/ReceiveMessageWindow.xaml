@@ -89,7 +89,7 @@
             </Button.Resources>
         </Button>  
    
-        <ListBox Background="White" Width="810" Height="570" Margin="5" FontFamily="Century" FontSize="16" Name="ListBox"  Loaded="LoadListBox" MouseDoubleClick ="ItemDoubleClick">
+        <ListBox Background="White" Width="810" Height="570" Margin="5" FontFamily="Century" FontSize="16" Name="ListBox"  MouseDoubleClick ="ItemDoubleClick">
             <ListBox.RenderTransform>
                 <TranslateTransform X="117" Y="6" />
             </ListBox.RenderTransform>

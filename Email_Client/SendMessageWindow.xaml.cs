@@ -9,12 +9,12 @@ namespace Email_Client
 {
     public partial class SendMessageWindow : Window
     {
-        private List<string> listOfPath;
+        private List<string> _listOfPath;
 
         public SendMessageWindow()
         {
             InitializeComponent();
-            listOfPath = new List<string>();
+            _listOfPath = new List<string>();
         }
 
         private void AttachmentButton_Click(object sender, RoutedEventArgs e)
@@ -23,10 +23,10 @@ namespace Email_Client
             if (dialog.ShowDialog() == true)
             {
                 string path = dialog.FileName;
-                listOfPath.Add(path);
+                _listOfPath.Add(path);
             }
 
-            if (listOfPath.Count > 0)
+            if (_listOfPath.Count > 0)
                 AttachmentBtn.Background = Brushes.LightGray;
         }
 
@@ -36,37 +36,41 @@ namespace Email_Client
             string resultMessageText = MessageTextBox.Text;
             var matches = Regex.Matches(MessageTextBox.Text, @"<a>((?:(?!<\/a>).)+)<\/a>");
             for (int i = 0; i < matches.Count; i++)
-                resultMessageText = resultMessageText.Replace($"<a>{matches[i].Groups[1].Value}",
-                    $"<a href=\"{matches[i].Groups[1].Value}\">{matches[i].Groups[1].Value}");
+            {
+                string link = matches[i].Groups[1].Value;
+                resultMessageText = resultMessageText.Replace($"<a>{link}", $"<a href=\"{link}\">{link}");
+            }
+
             resultMessageText = resultMessageText.Replace("\r\n", "<br>");
             return resultMessageText;
         }
 
         private void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ReceiverTextBox.Text != "")
+            if (Sender.IsConnected == false)
             {
-                MainWindow mainWindow = new MainWindow();
+                MessageBox.Show("Ошибка подключения! Пожалуйста, заполните настройки.");
                 SettingsWindow settingsWindow = new SettingsWindow();
-                try
-                {
-                    Sender.Authorization(settingsWindow.SendHostTextBox.Text,
-                        Convert.ToInt32(settingsWindow.SendPortTextBox.Text), mainWindow.EmailTextBox.Text,
-                        mainWindow.PasswordTextBox.Password, (bool) settingsWindow.Ssl.IsChecked);
-
-                    Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, ChangeMessageText(), listOfPath);
-                    MessageBox.Show("Сообщение успешно отправлено!");
-                    AttachmentBtn.Background = Brushes.Turquoise;
-                    Close();
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка при отправке сообщения! Проверьте настройки(хост, порт).");
-                }
+                settingsWindow.ShowDialog();
+                return;
             }
-            else
+
+            if (ReceiverTextBox.Text == "")
             {
                 MessageBox.Show("Заполненение поля <Получатель> обязательно!");
+                return;
+            }
+
+            try
+            {
+                Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, ChangeMessageText(), _listOfPath);
+                MessageBox.Show("Сообщение успешно отправлено!");
+                AttachmentBtn.Background = Brushes.Turquoise;
+                Close();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка при отправке сообщения! Проверьте настройки(хост, порт).");
             }
         }
 

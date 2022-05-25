@@ -15,24 +15,26 @@ namespace Email_Client
 
         private void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ReceiptHostTextBox.Text != "" && ReceiptPortTextBox.Text != "" &&
-                EmailTextBox.Text != "" & PasswordTextBox.Password != "")
+            if (ReceiptHostTextBox.Text == "" || 
+                ReceiptPortTextBox.Text == "" ||
+                EmailTextBox.Text == "" || 
+                PasswordTextBox.Password == "")
             {
-                try
-                {
-                    Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text),
-                        EmailTextBox.Text, PasswordTextBox.Password,(bool)Ssl.IsChecked);
-                    
-                    ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
-                    receiveMessageWindow.ShowDialog();
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка авторизации!\nПроверьте заполненные поля и подключение к интернету!");
-                }
-            }
-            else
                 MessageBox.Show("Ошибка! Заполнены не все поля!");
+            }
+
+            try
+            {
+                Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text),
+                    EmailTextBox.Text, PasswordTextBox.Password, (bool) Ssl.IsChecked);
+                Sender.Authenticate(EmailTextBox.Text, PasswordTextBox.Password);
+                ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
+                receiveMessageWindow.ShowDialog();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка авторизации!\nПроверьте заполненные поля и подключение к интернету!");
+            }
         }
     }
 }

@@ -12,28 +12,30 @@ namespace Email_Client
 {
     public static class Receiver
     {
-        public static byte TypeMessage;
-        private static ImapClient imapClient;
-        private static IMailFolder mailFolder;
+        public static MessageType TypeMessage { get; set; }
+        private static ImapClient _imapClient;
+        private static IMailFolder _mailFolder;
 
-        private static string email;
-        private static string password;
-        private static string host;
-        private static int port;
+        private static string _email;
+        private static string _password;
+        private static string _host;
+        private static int _port;
+        private static bool _ssl;
 
 
-        public static void Authorization(string _host, int _port, string _email, string _password, bool _Ssl)
+        public static void Authorization(string host, int port, string email, string password, bool ssl)
         {
-            host = _host;
-            port = _port;
-            email = _email;
-            password = _password;
+            _host = host;
+            _port = port;
+            _email = email;
+            _password = password;
+            _ssl = ssl;
 
-            imapClient = new ImapClient();
-            imapClient.Connect(host, port, _Ssl);
-            imapClient.Authenticate(Encoding.UTF8, email, password);
-            mailFolder = imapClient.Inbox;
 
+            _imapClient = new ImapClient();
+            _imapClient.Connect(host, port, ssl);
+            _imapClient.Authenticate(Encoding.UTF8, email, password);
+            _mailFolder = _imapClient.Inbox;
         }
 
         private static string GetDataFromField(HeaderList headerList, string field)
@@ -45,30 +47,38 @@ namespace Email_Client
             return "(Без темы)";
         }
 
+        public static void Update()
+        {
+            CloseConnection();
+            Authorization(_host, _port, _email, _password, _ssl);
+        }
+
         //
         public static int GetCountMessages()
-        { if (TypeMessage == 0)
-                mailFolder = imapClient.Inbox; //receiv
-            else if (TypeMessage == 1)
-                mailFolder = imapClient.GetFolder(SpecialFolder.Sent); //sen
-            mailFolder.Open(FolderAccess.ReadOnly);
-            return mailFolder.Count;
+        {
+            if (TypeMessage == MessageType.Received)
+                _mailFolder = _imapClient.Inbox; //receiv
+            else if (TypeMessage == MessageType.Sent)
+                _mailFolder = _imapClient.GetFolder(SpecialFolder.Sent); //sen
+            _mailFolder.Open(FolderAccess.ReadOnly);
+            return _mailFolder.Count;
         }
 
         public static IEnumerable<MimeEntity> GetAttachments(int index)
         {
-            mailFolder.Open(FolderAccess.ReadOnly);
-            return mailFolder.GetMessage(index).Attachments;
+            _mailFolder.Open(FolderAccess.ReadOnly);
+            return _mailFolder.GetMessage(index).Attachments;
         }
+
         public static string GetMessageByIndex(int index)
         {
-            mailFolder.Open(FolderAccess.ReadOnly);
-            var data = mailFolder.GetHeaders(index);
+            _mailFolder.Open(FolderAccess.ReadOnly);
+            var data = _mailFolder.GetHeaders(index);
             string message = $"<b>Тема:</b> {GetDataFromField(data, "Subject")}<br>" +
                              $"<b>От:</b> {GetDataFromField(data, "From")}<br>" +
                              $"<b>Кому:</b> {GetDataFromField(data, "To")}<br>" +
                              $"<b>Дата:</b> {GetDataFromField(data, "Date").Split('+')[0]}<br>" +
-                             $"<br>{mailFolder.GetMessage(index).HtmlBody}";
+                             $"<br>{_mailFolder.GetMessage(index).HtmlBody}";
             return message;
         }
 
@@ -76,30 +86,31 @@ namespace Email_Client
         {
             List<string> listOfMessages = new List<string>();
             //var inbox = imapClient.Inbox;
-            if (TypeMessage == 0)
-                mailFolder = imapClient.Inbox; //receiv
-            else if (TypeMessage == 1)
-                mailFolder = imapClient.GetFolder(SpecialFolder.Sent); //sen
-         
-            mailFolder.Open(FolderAccess.ReadOnly);
+            if (TypeMessage == MessageType.Received)
+                _mailFolder = _imapClient.Inbox; //receiv
+            else if (TypeMessage == MessageType.Sent)
+                _mailFolder = _imapClient.GetFolder(SpecialFolder.Sent); //sen
+
+            _mailFolder.Open(FolderAccess.ReadOnly);
             for (int i = firstIndex; i < lastIndex; i++)
             {
-                var headerList = mailFolder.GetHeaders(i);
+                var headerList = _mailFolder.GetHeaders(i);
 
                 string headerString =
                     $"{i}" +
                     $"{GetDataFromField(headerList, "Subject")}      " +
                     $"{GetDataFromField(headerList, "From")}      " +
                     $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
-                
+
                 listOfMessages.Add(headerString);
             }
+
             return listOfMessages;
         }
 
         public static void CloseConnection()
         {
-            imapClient.Disconnect(true);
+            _imapClient.Disconnect(true);
         }
     }
 }

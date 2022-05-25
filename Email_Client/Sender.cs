@@ -7,25 +7,19 @@ namespace Email_Client
 {
     public static class Sender
     {
-        private static SmtpClient smtpClient;
+        private static SmtpClient _smtpClient;
 
-        private static string email;
-        private static string password;
-        private static string host;
-        private static int port;
-
-
-        public static void Authorization(string _host, int _port, string _email, string _password, bool _useSsl)
-        {
-            host = _host;
-            port = _port;
-            email = _email;
-            password = _password;
-
-            smtpClient = new SmtpClient();
-            smtpClient.Connect(host, port, _useSsl);
-            smtpClient.Authenticate(email, password);
+        private static string _email;
+        private static string _password;
+        private static bool _isConnected;
+        public static bool IsConnected {
+            get
+            {
+                return _isConnected;
+            }
         }
+
+        
 
 
         public static BodyBuilder CreateMessageContent(string message, List<string> listOfString)
@@ -41,23 +35,39 @@ namespace Email_Client
             List<string> listOfString)
         {
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("", email));
+            emailMessage.From.Add(new MailboxAddress("", _email));
             emailMessage.To.Add(new MailboxAddress("", recipient));
             emailMessage.Subject = subject;
             emailMessage.Body = CreateMessageContent(message, listOfString).ToMessageBody();
             return emailMessage;
         }
 
+        public static void Authenticate(string email,string password)
+        {
+            _email = email;
+            _password = password;
+        }
+        public static void Connect(string host, int port, bool ssl)
+        {
+
+            _smtpClient = new SmtpClient();
+            _smtpClient.Connect(host, port, ssl);
+            _smtpClient.Authenticate(_email, _password);
+            _isConnected = true;
+
+        }
+        
+        
         public static void SendMessage(string recipient, string subject, string message, List<string> listOfString)
         {
             MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);
-            smtpClient.Send(emailMessage);
+            _smtpClient.Send(emailMessage);
         }
 
         public static void CloseConnection()
         {
-            if (smtpClient != null)
-                smtpClient.Disconnect(true);
+            if (_smtpClient != null)
+                _smtpClient.Disconnect(true);
         }
     }
 }

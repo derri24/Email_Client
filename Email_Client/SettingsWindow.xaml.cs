@@ -11,7 +11,7 @@ namespace Email_Client
         {
             InitializeComponent();
         }
-        
+
         private void Load(object sender, RoutedEventArgs e)
         {
             if (SettingsStorage.Host != null && SettingsStorage.Port != null)
@@ -24,26 +24,25 @@ namespace Email_Client
 
         private void SaveSettings_ButtonClick(object sender, RoutedEventArgs e)
         {
-            if (SendHostTextBox.Text != "" || SendPortTextBox.Text != "")
+            if (SendHostTextBox.Text == "" || SendPortTextBox.Text == "")
             {
-                MainWindow mainWindow = new MainWindow();
-                try
-                {
-                    Sender.Authorization(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text),
-                        mainWindow.EmailTextBox.Text, mainWindow.PasswordTextBox.Password,(bool)Ssl.IsChecked);
-                    SettingsStorage.Host = SendHostTextBox.Text;
-                    SettingsStorage.Port = SendPortTextBox.Text;
-                    SettingsStorage.Ssl = (bool)Ssl.IsChecked;
-                    MessageBox.Show("Данные успешно сохранены!");
-                    Close();
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка подключения! Проверьте заполненные поля!");
-                }
-            }
-            else
                 MessageBox.Show("Ошибка! Заполнены не все поля!");
+                return;
+            }
+
+            try
+            {
+                Sender.Connect(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text), (bool) Ssl.IsChecked);
+                SettingsStorage.Host = SendHostTextBox.Text;
+                SettingsStorage.Port = SendPortTextBox.Text;
+                SettingsStorage.Ssl = (bool) Ssl.IsChecked;
+                MessageBox.Show("Данные успешно сохранены!");
+                Close();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка подключения! Проверьте заполненные поля!");
+            }
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
