@@ -27,7 +27,7 @@
             </Label.RenderTransform>
         </Label>
 
-        <TextBox FontSize="20" Width="770" Height="35" FontFamily="Century">
+        <TextBox FontSize="20" Width="770" Height="35" FontFamily="Century" TextChanged="ChangeSearchBoxText" Name="SearchBox">
             <TextBox.RenderTransform>
                 <TranslateTransform X="95" Y="-310" />
             </TextBox.RenderTransform>
