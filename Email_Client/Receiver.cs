@@ -85,15 +85,22 @@ namespace Email_Client
             _mailFolder.Open(FolderAccess.ReadOnly);
             
             HeaderList data;
+            string bodyString; 
             if (IsSearch)
+            {
                 data = _mailFolder.GetHeaders(listOfUniqueIds[index]);
+                bodyString = _mailFolder.GetMessage(listOfUniqueIds[index]).HtmlBody;
+            }
             else
+            {
                 data = _mailFolder.GetHeaders(index);
+                bodyString = _mailFolder.GetMessage(index).HtmlBody;
+            }
             string message = $"<b>Тема:</b> {GetDataFromField(data, "Subject")}<br>" +
                              $"<b>От:</b> {GetDataFromField(data, "From")}<br>" +
                              $"<b>Кому:</b> {GetDataFromField(data, "To")}<br>" +
                              $"<b>Дата:</b> {GetDataFromField(data, "Date").Split('+')[0]}<br>" +
-                             $"<br>{_mailFolder.GetMessage(listOfUniqueIds[index]).HtmlBody}";
+                             $"<br>{bodyString}";
             return message;
         }
 

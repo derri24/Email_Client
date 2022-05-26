@@ -41,12 +41,12 @@ namespace Email_Client
             settingsWindow.ShowDialog();
         }
 
-        private void ChangeSearchBoxText(object sender,TextChangedEventArgs e)
+        private void ChangeSearchBoxText(object sender, TextChangedEventArgs e)
         {
-            if (SearchBox.Text=="")
+            if (SearchBox.Text == "")
             {
                 Receiver.IsSearch = false;
-            } 
+            }
         }
 
         private void LoadWindow(object sender, RoutedEventArgs e)
@@ -123,7 +123,8 @@ namespace Email_Client
                 MessagesListBox.Items.Clear();
                 List<string> listOfMessages;
                 if (Receiver.IsSearch)
-                    listOfMessages = Receiver.GetFoundHeaders(counter, counter + countMessages % counter, SearchBox.Text);
+                    listOfMessages =
+                        Receiver.GetFoundHeaders(counter, counter + countMessages % counter, SearchBox.Text);
                 else listOfMessages = Receiver.GetHeaders(counter, counter + countMessages % counter);
                 for (int i = 0; i < listOfMessages.Count; i++)
                     MessagesListBox.Items.Add(listOfMessages[i]);
@@ -155,9 +156,10 @@ namespace Email_Client
                 {
                     ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
                 }
-                   
+
                 else if (Receiver.TypeMessage == MessageType.Sent)
                     SentMessagesBtn.Content = $"Исходящие: {countMessages}";
+
                 MessagesListBox.Items.Clear();
 
                 GetMessages();
@@ -194,6 +196,11 @@ namespace Email_Client
                 index = MessagesListBox.SelectedIndex;
             else
                 index = (number - 1) * CountOfMessagesOnPage + MessagesListBox.SelectedIndex;
+            var attachments = Receiver.GetAttachments(index);
+            if (attachments.Count() > 0)
+                SaveAttachmentsBtn.Visibility = Visibility.Visible;
+            else
+                SaveAttachmentsBtn.Visibility = Visibility.Hidden;
             var message = Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
@@ -204,11 +211,6 @@ namespace Email_Client
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             var attachments = Receiver.GetAttachments(index);
-            if (attachments.Count() > 0)
-            {
-                MessageBox.Show("Вложений нет!");
-                return;
-            }
 
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
@@ -250,7 +252,6 @@ namespace Email_Client
 
         private void ReceivedMessagesButton_Click(object sender, RoutedEventArgs e)
         {
-                        
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
@@ -281,7 +282,7 @@ namespace Email_Client
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SearchBox.Text!="")
+            if (SearchBox.Text != "")
             {
                 counter = CountOfMessagesOnPage;
                 ShowListBoxOfMessages();
@@ -290,9 +291,12 @@ namespace Email_Client
                 countMessages = Receiver.GetCountFoundMessages(SearchBox.Text);
                 if (countMessages < counter)
                     counter = countMessages;
-                GetMessages();
+                if (countMessages == 0)
+                    MessageBox.Show(
+                        "Не нашлось ни одного письма, попробуйте сформулировать запрос иначе.");
+                else
+                    GetMessages();
             }
-        
         }
     }
 }
