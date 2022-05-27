@@ -49,22 +49,24 @@ namespace Email_Client
             }
         }
 
-        private void LoadWindow(object sender, RoutedEventArgs e)
+        private async void LoadWindow(object sender, RoutedEventArgs e)
         {
+            Receiver.TypeMessage = MessageType.Sent;
+            countMessages = await Receiver.GetCountMessages();
+
             MainWindow mainWindow = new MainWindow();
             EmailLabel.Content = mainWindow.EmailTextBox.Text;
-
-            Receiver.TypeMessage = MessageType.Sent;
-            countMessages = Receiver.GetCountMessages();
             SentMessagesBtn.Content = $"Исходящие: {countMessages}";
+
             Receiver.TypeMessage = MessageType.Received;
-            countMessages = Receiver.GetCountMessages();
+            countMessages = await Receiver.GetCountMessages();
+
             ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
             GetMessages();
             ReceivedMessagesBtn.Background = Brushes.LightGray;
         }
 
-        private void LeftArrowButton_Click(object sender, RoutedEventArgs e)
+        private async void LeftArrowButton_Click(object sender, RoutedEventArgs e)
         {
             if (counter % CountOfMessagesOnPage == 0 && counter - CountOfMessagesOnPage > 0)
             {
@@ -72,9 +74,10 @@ namespace Email_Client
                 counter -= CountOfMessagesOnPage;
                 List<string> listOfMessages;
                 if (Receiver.IsSearch)
-                    listOfMessages = Receiver.GetFoundHeaders(counter - CountOfMessagesOnPage, counter, "Re: CHECK");
+                    listOfMessages =
+                        await Receiver.GetFoundHeaders(counter - CountOfMessagesOnPage, counter, SearchBox.Text);
                 else
-                    listOfMessages = Receiver.GetHeaders(counter - CountOfMessagesOnPage, counter);
+                    listOfMessages = await Receiver.GetHeaders(counter - CountOfMessagesOnPage, counter);
 
                 for (int i = 0; i < listOfMessages.Count && i < counter; i++)
                     MessagesListBox.Items.Add(listOfMessages[i]);
@@ -86,11 +89,11 @@ namespace Email_Client
                 MessagesListBox.Items.Clear();
                 List<string> listOfMessages;
                 if (Receiver.IsSearch)
-                    listOfMessages = Receiver.GetFoundHeaders(
+                    listOfMessages = await Receiver.GetFoundHeaders(
                         counter - (counter % CountOfMessagesOnPage) - CountOfMessagesOnPage,
-                        counter - (counter % CountOfMessagesOnPage), "Re: CHECK");
+                        counter - (counter % CountOfMessagesOnPage), SearchBox.Text);
                 else
-                    listOfMessages = Receiver.GetHeaders(
+                    listOfMessages = await Receiver.GetHeaders(
                         counter - (counter % CountOfMessagesOnPage) - CountOfMessagesOnPage,
                         counter - (counter % CountOfMessagesOnPage));
 
@@ -102,15 +105,16 @@ namespace Email_Client
             }
         }
 
-        private void RightArrowButton_Click(object sender, RoutedEventArgs e)
+        private async void RightArrowButton_Click(object sender, RoutedEventArgs e)
         {
             if (counter + CountOfMessagesOnPage <= countMessages)
             {
                 MessagesListBox.Items.Clear();
                 List<string> listOfMessages;
                 if (Receiver.IsSearch)
-                    listOfMessages = Receiver.GetFoundHeaders(counter, counter + CountOfMessagesOnPage, "Re: CHECK");
-                else listOfMessages = Receiver.GetHeaders(counter, counter + CountOfMessagesOnPage);
+                    listOfMessages =
+                        await Receiver.GetFoundHeaders(counter, counter + CountOfMessagesOnPage, SearchBox.Text);
+                else listOfMessages = await Receiver.GetHeaders(counter, counter + CountOfMessagesOnPage);
 
                 for (int i = 0; i < listOfMessages.Count; i++)
                     MessagesListBox.Items.Add(listOfMessages[i]);
@@ -124,8 +128,8 @@ namespace Email_Client
                 List<string> listOfMessages;
                 if (Receiver.IsSearch)
                     listOfMessages =
-                        Receiver.GetFoundHeaders(counter, counter + countMessages % counter, SearchBox.Text);
-                else listOfMessages = Receiver.GetHeaders(counter, counter + countMessages % counter);
+                        await Receiver.GetFoundHeaders(counter, counter + countMessages % counter, SearchBox.Text);
+                else listOfMessages = await Receiver.GetHeaders(counter, counter + countMessages % counter);
                 for (int i = 0; i < listOfMessages.Count; i++)
                     MessagesListBox.Items.Add(listOfMessages[i]);
                 counter += countMessages % counter;
@@ -139,15 +143,15 @@ namespace Email_Client
             ShowListBoxOfMessages();
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Receiver.Update();
+               await Receiver.Update();
                 ShowListBoxOfMessages();
                 SearchBox.Text = "";
 
-                countMessages = Receiver.GetCountMessages();
+                countMessages = await Receiver.GetCountMessages();
                 if (countMessages < CountOfMessagesOnPage)
                     counter = countMessages;
                 else
@@ -182,7 +186,7 @@ namespace Email_Client
         }
 
 
-        private void ListBoxItemDouble_Click(object sender, MouseButtonEventArgs e)
+        private async void ListBoxItemDouble_Click(object sender, MouseButtonEventArgs e)
         {
             MyWebBrowser.Visibility = Visibility.Visible;
             ComeBackBtn.Visibility = Visibility.Visible;
@@ -196,21 +200,21 @@ namespace Email_Client
                 index = MessagesListBox.SelectedIndex;
             else
                 index = (number - 1) * CountOfMessagesOnPage + MessagesListBox.SelectedIndex;
-            var attachments = Receiver.GetAttachments(index);
+            var attachments =  Receiver.GetAttachments(index);
             if (attachments.Count() > 0)
                 SaveAttachmentsBtn.Visibility = Visibility.Visible;
             else
                 SaveAttachmentsBtn.Visibility = Visibility.Hidden;
-            var message = Receiver.GetMessageByIndex(index);
+            var message =  Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
         }
 
 
-        private void SaveAttachmentsButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            var attachments = Receiver.GetAttachments(index);
+            var attachments =  Receiver.GetAttachments(index);
 
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
@@ -236,21 +240,21 @@ namespace Email_Client
         }
 
 
-        private void GetMessages()
+        private async void GetMessages()
         {
             number = 1;
             List<string> listOfHeaders;
             if (Receiver.IsSearch)
-                listOfHeaders = Receiver.GetFoundHeaders(0, counter, SearchBox.Text);
+                listOfHeaders = await Receiver.GetFoundHeaders(0, counter, SearchBox.Text);
             else
-                listOfHeaders = Receiver.GetHeaders(0, counter);
+                listOfHeaders = await Receiver.GetHeaders(0, counter);
             for (int i = 0; i < listOfHeaders.Count && i < counter; i++)
                 MessagesListBox.Items.Add(listOfHeaders[i]);
             PageNumberLabel.Content = number.ToString();
             ComeBackBtn.Visibility = Visibility.Hidden;
         }
 
-        private void ReceivedMessagesButton_Click(object sender, RoutedEventArgs e)
+        private async void ReceivedMessagesButton_Click(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
@@ -259,13 +263,13 @@ namespace Email_Client
             ReceivedMessagesBtn.Background = Brushes.LightGray;
             SentMessagesBtn.Background = Brushes.Turquoise;
             Receiver.TypeMessage = MessageType.Received;
-            countMessages = Receiver.GetCountMessages();
+            countMessages = await Receiver.GetCountMessages();
             if (countMessages < counter)
                 counter = countMessages;
             GetMessages();
         }
 
-        private void SentMessagesButton_Click(object sender, RoutedEventArgs e)
+        private async void SentMessagesButton_Click(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
@@ -274,13 +278,13 @@ namespace Email_Client
             SentMessagesBtn.Background = Brushes.LightGray;
             ReceivedMessagesBtn.Background = Brushes.Turquoise;
             Receiver.TypeMessage = MessageType.Sent;
-            countMessages = Receiver.GetCountMessages();
+            countMessages = await Receiver.GetCountMessages();
             if (countMessages < counter)
                 counter = countMessages;
             GetMessages();
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             if (SearchBox.Text != "")
             {
@@ -288,7 +292,7 @@ namespace Email_Client
                 ShowListBoxOfMessages();
                 MessagesListBox.Items.Clear();
                 Receiver.IsSearch = true;
-                countMessages = Receiver.GetCountFoundMessages(SearchBox.Text);
+                countMessages = await Receiver.GetCountFoundMessages(SearchBox.Text);
                 if (countMessages < counter)
                     counter = countMessages;
                 if (countMessages == 0)

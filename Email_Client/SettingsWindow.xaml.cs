@@ -22,7 +22,7 @@ namespace Email_Client
             }
         }
 
-        private void SaveSettings_ButtonClick(object sender, RoutedEventArgs e)
+        private async void SaveSettings_ButtonClick(object sender, RoutedEventArgs e)
         {
             if (SendHostTextBox.Text == "" || SendPortTextBox.Text == "")
             {
@@ -32,7 +32,7 @@ namespace Email_Client
 
             try
             {
-                Sender.Connect(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text), (bool) Ssl.IsChecked);
+                await Sender.Connect(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text), (bool) Ssl.IsChecked);
                 SettingsStorage.Host = SendHostTextBox.Text;
                 SettingsStorage.Port = SendPortTextBox.Text;
                 SettingsStorage.Ssl = (bool) Ssl.IsChecked;
@@ -45,10 +45,10 @@ namespace Email_Client
             }
         }
 
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        private async void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            Receiver.CloseConnection();
-            Sender.CloseConnection();
+             await Receiver.CloseConnection();
+            await Sender.CloseConnection();
 
             Environment.Exit(0);
         }

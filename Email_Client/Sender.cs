@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -14,7 +15,7 @@ namespace Email_Client
         private static bool _isConnected;
         public static bool IsConnected => _isConnected;
 
-        public static BodyBuilder CreateMessageContent(string message, List<string> listOfString)
+        private static BodyBuilder CreateMessageContent(string message, List<string> listOfString)
         {
             var builder = new BodyBuilder();
             for (int i = 0; i < listOfString.Count; i++)
@@ -26,7 +27,7 @@ namespace Email_Client
         private static MimeMessage CreateMessage(string recipient, string subject, string message,
             List<string> listOfString)
         {
-            var emailMessage = new MimeMessage();
+            MimeMessage emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("", _email));
             emailMessage.To.Add(new MailboxAddress("", recipient));
             emailMessage.Subject = subject;
@@ -34,30 +35,40 @@ namespace Email_Client
             return emailMessage;
         }
 
-        public static void Authenticate(string email, string password)
+        public static async Task Authenticate(string email, string password)
         {
-            _email = email;
-            _password = password;
+            await Task.Run(() =>
+            {
+                _email = email;
+                _password = password;
+            });
         }
 
-        public static void Connect(string host, int port, bool ssl)
+        public static async Task Connect(string host, int port, bool ssl)
         {
-            _smtpClient = new SmtpClient();
-            _smtpClient.Connect(host, port, ssl);
-            _smtpClient.Authenticate(_email, _password);
-            _isConnected = true;
+            await Task.Run(() =>
+            {
+                _smtpClient = new SmtpClient();
+                _smtpClient.Connect(host, port, ssl);
+                _smtpClient.Authenticate(_email, _password);
+                _isConnected = true;
+            });
         }
 
-        public static void SendMessage(string recipient, string subject, string message, List<string> listOfString)
+        public static async Task SendMessage(string recipient, string subject, string message,
+            List<string> listOfString)
         {
             MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);
-            _smtpClient.Send(emailMessage);
+            await Task.Run(() => { _smtpClient.Send(emailMessage); });
         }
 
-        public static void CloseConnection()
+        public static async Task CloseConnection()
         {
-            if (_smtpClient != null)
-                _smtpClient.Disconnect(true);
+            await Task.Run(() =>
+            {
+                if (_smtpClient != null)
+                    _smtpClient.Disconnect(true);
+            });
         }
     }
 }

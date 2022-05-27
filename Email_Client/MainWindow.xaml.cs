@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Email_Client
 {
@@ -13,21 +17,22 @@ namespace Email_Client
             InitializeComponent();
         }
 
-        private void GoButton_Click(object sender, RoutedEventArgs e)
+        private async void GoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ReceiptHostTextBox.Text == "" || 
+
+            if (ReceiptHostTextBox.Text == "" ||
                 ReceiptPortTextBox.Text == "" ||
-                EmailTextBox.Text == "" || 
+                EmailTextBox.Text == "" ||
                 PasswordTextBox.Password == "")
             {
                 MessageBox.Show("Ошибка! Заполнены не все поля!");
+                return;
             }
-
             try
             {
-                Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text),
-                    EmailTextBox.Text, PasswordTextBox.Password, (bool) Ssl.IsChecked);
-                Sender.Authenticate(EmailTextBox.Text, PasswordTextBox.Password);
+                await Receiver.Authorization(ReceiptHostTextBox.Text, Convert.ToInt32(ReceiptPortTextBox.Text), EmailTextBox.Text, PasswordTextBox.Password, (bool) Ssl.IsChecked);
+                await Sender.Authenticate(EmailTextBox.Text, PasswordTextBox.Password);
+
                 ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
                 receiveMessageWindow.ShowDialog();
             }

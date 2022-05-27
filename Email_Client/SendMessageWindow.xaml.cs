@@ -45,7 +45,7 @@ namespace Email_Client
             return resultMessageText;
         }
 
-        private void SendMessageButton_Click(object sender, RoutedEventArgs e)
+        private async void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
             if (Sender.IsConnected == false)
             {
@@ -63,7 +63,7 @@ namespace Email_Client
 
             try
             {
-                Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, ChangeMessageText(), _listOfPath);
+               await Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, ChangeMessageText(), _listOfPath);
                 MessageBox.Show("Сообщение успешно отправлено!");
                 AttachmentBtn.Background = Brushes.Turquoise;
                 Close();
