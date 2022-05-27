@@ -45,33 +45,41 @@ namespace Email_Client
             return resultMessageText;
         }
 
+        private bool openAccess = true;
         private async void SendMessageButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Sender.IsConnected == false)
+            if (openAccess)
             {
-                MessageBox.Show("Ошибка подключения! Пожалуйста, заполните настройки.");
-                SettingsWindow settingsWindow = new SettingsWindow();
-                settingsWindow.ShowDialog();
-                return;
+                openAccess = false;
+                if (Sender.IsConnected == false)
+                {
+                    MessageBox.Show("Ошибка подключения! Пожалуйста, заполните настройки.");
+                    SettingsWindow settingsWindow = new SettingsWindow();
+                    settingsWindow.ShowDialog();
+                    return;
+                }
+
+                if (ReceiverTextBox.Text == "")
+                {
+                    MessageBox.Show("Заполненение поля <Получатель> обязательно!");
+                    return;
+                }
+
+                try
+                {
+                    await Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, ChangeMessageText(), _listOfPath);
+                    MessageBox.Show("Сообщение успешно отправлено!");
+                    AttachmentBtn.Background = Brushes.Turquoise;
+                    Close();
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка при отправке сообщения! Проверьте настройки(хост, порт).");
+                }
+
+                openAccess = true;
             }
 
-            if (ReceiverTextBox.Text == "")
-            {
-                MessageBox.Show("Заполненение поля <Получатель> обязательно!");
-                return;
-            }
-
-            try
-            {
-               await Sender.SendMessage(ReceiverTextBox.Text, SubjectTextBox.Text, ChangeMessageText(), _listOfPath);
-                MessageBox.Show("Сообщение успешно отправлено!");
-                AttachmentBtn.Background = Brushes.Turquoise;
-                Close();
-            }
-            catch
-            {
-                MessageBox.Show("Ошибка при отправке сообщения! Проверьте настройки(хост, порт).");
-            }
         }
 
         private void BoldButton_Click(object sender, RoutedEventArgs e)

@@ -22,27 +22,34 @@ namespace Email_Client
             }
         }
 
+        private bool openAccess = true;
         private async void SaveSettings_ButtonClick(object sender, RoutedEventArgs e)
         {
-            if (SendHostTextBox.Text == "" || SendPortTextBox.Text == "")
+            if (openAccess )
             {
-                MessageBox.Show("Ошибка! Заполнены не все поля!");
-                return;
-            }
+                openAccess = false;
+                if (SendHostTextBox.Text == "" || SendPortTextBox.Text == "")
+                {
+                    MessageBox.Show("Ошибка! Заполнены не все поля!");
+                    return;
+                }
 
-            try
-            {
-                await Sender.Connect(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text), (bool) Ssl.IsChecked);
-                SettingsStorage.Host = SendHostTextBox.Text;
-                SettingsStorage.Port = SendPortTextBox.Text;
-                SettingsStorage.Ssl = (bool) Ssl.IsChecked;
-                MessageBox.Show("Данные успешно сохранены!");
-                Close();
+                try
+                {
+                    await Sender.Connect(SendHostTextBox.Text, Convert.ToInt32(SendPortTextBox.Text), (bool) Ssl.IsChecked);
+                    SettingsStorage.Host = SendHostTextBox.Text;
+                    SettingsStorage.Port = SendPortTextBox.Text;
+                    SettingsStorage.Ssl = (bool) Ssl.IsChecked;
+                    MessageBox.Show("Данные успешно сохранены!");
+                    Close();
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка подключения! Проверьте заполненные поля!");
+                } 
+                openAccess = true;
             }
-            catch
-            {
-                MessageBox.Show("Ошибка подключения! Проверьте заполненные поля!");
-            }
+            
         }
 
         private async void ExitButton_Click(object sender, RoutedEventArgs e)

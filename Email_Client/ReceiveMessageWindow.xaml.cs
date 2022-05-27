@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
@@ -49,8 +51,12 @@ namespace Email_Client
             }
         }
 
+        private bool openAccess = false;
+
         private async void LoadWindow(object sender, RoutedEventArgs e)
         {
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = await Receiver.GetCountMessages();
 
@@ -62,12 +68,18 @@ namespace Email_Client
             countMessages = await Receiver.GetCountMessages();
 
             ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
-            GetMessages();
             ReceivedMessagesBtn.Background = Brushes.LightGray;
+            await GetMessages();
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
 
         private async void LeftArrowButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!openAccess)
+                return;
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             if (counter % CountOfMessagesOnPage == 0 && counter - CountOfMessagesOnPage > 0)
             {
                 MessagesListBox.Items.Clear();
@@ -103,10 +115,17 @@ namespace Email_Client
                 number--;
                 PageNumberLabel.Content = number.ToString();
             }
+
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
 
         private async void RightArrowButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!openAccess)
+                return;
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             if (counter + CountOfMessagesOnPage <= countMessages)
             {
                 MessagesListBox.Items.Clear();
@@ -136,6 +155,9 @@ namespace Email_Client
                 number++;
                 PageNumberLabel.Content = number.ToString();
             }
+
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
 
         private void ComeBackButton_Click(object sender, RoutedEventArgs e)
@@ -145,9 +167,13 @@ namespace Email_Client
 
         private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!openAccess)
+                return;
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             try
             {
-               await Receiver.Update();
+                await Receiver.Update();
                 ShowListBoxOfMessages();
                 SearchBox.Text = "";
 
@@ -157,21 +183,21 @@ namespace Email_Client
                 else
                     counter = CountOfMessagesOnPage;
                 if (Receiver.TypeMessage == MessageType.Received)
-                {
                     ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
-                }
 
                 else if (Receiver.TypeMessage == MessageType.Sent)
                     SentMessagesBtn.Content = $"Исходящие: {countMessages}";
 
                 MessagesListBox.Items.Clear();
-
-                GetMessages();
+                await GetMessages();
             }
             catch
             {
                 MessageBox.Show("Ошибка переподключения!\nПроверьте подключение к интернету!");
             }
+
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
 
         private void ShowListBoxOfMessages()
@@ -200,12 +226,12 @@ namespace Email_Client
                 index = MessagesListBox.SelectedIndex;
             else
                 index = (number - 1) * CountOfMessagesOnPage + MessagesListBox.SelectedIndex;
-            var attachments =  Receiver.GetAttachments(index);
+            var attachments = Receiver.GetAttachments(index);
             if (attachments.Count() > 0)
                 SaveAttachmentsBtn.Visibility = Visibility.Visible;
             else
                 SaveAttachmentsBtn.Visibility = Visibility.Hidden;
-            var message =  Receiver.GetMessageByIndex(index);
+            var message = Receiver.GetMessageByIndex(index);
             Stream stream = new MemoryStream(Encoding.Default.GetBytes(message));
             MyWebBrowser.NavigateToStream(stream);
         }
@@ -214,7 +240,7 @@ namespace Email_Client
         private async void SaveAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            var attachments =  Receiver.GetAttachments(index);
+            var attachments = Receiver.GetAttachments(index);
 
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
@@ -240,7 +266,7 @@ namespace Email_Client
         }
 
 
-        private async void GetMessages()
+        private async Task GetMessages()
         {
             number = 1;
             List<string> listOfHeaders;
@@ -256,6 +282,10 @@ namespace Email_Client
 
         private async void ReceivedMessagesButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!openAccess)
+                return;
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
@@ -266,11 +296,17 @@ namespace Email_Client
             countMessages = await Receiver.GetCountMessages();
             if (countMessages < counter)
                 counter = countMessages;
-            GetMessages();
+            await GetMessages();
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
 
         private async void SentMessagesButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!openAccess)
+                return;
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
@@ -281,11 +317,17 @@ namespace Email_Client
             countMessages = await Receiver.GetCountMessages();
             if (countMessages < counter)
                 counter = countMessages;
-            GetMessages();
+            await GetMessages();
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!openAccess)
+                return;
+            openAccess = false;
+            MessagesListBox.IsEnabled = false;
             if (SearchBox.Text != "")
             {
                 counter = CountOfMessagesOnPage;
@@ -296,11 +338,30 @@ namespace Email_Client
                 if (countMessages < counter)
                     counter = countMessages;
                 if (countMessages == 0)
+                {
                     MessageBox.Show(
                         "Не нашлось ни одного письма, попробуйте сформулировать запрос иначе.");
+                    Receiver.IsSearch = false;
+                    SearchBox.Text = "";
+                    countMessages = await Receiver.GetCountMessages();
+                    if (countMessages < CountOfMessagesOnPage)
+                        counter = countMessages;
+                    else
+                        counter = CountOfMessagesOnPage;
+                    await GetMessages();
+                }
                 else
-                    GetMessages();
+                    await GetMessages();
             }
+            else
+            {
+                MessageBox.Show(
+                    "Ваш запрос пуст, попробуйте сформулировать запрос иначе.");
+            }
+
+            openAccess = true;
+            MessagesListBox.IsEnabled = true;
         }
+        
     }
 }

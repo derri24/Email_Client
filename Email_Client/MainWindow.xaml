@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Email_Client"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        Closed="MainWindow_OnClosed"
         Title="" Height="400" Width="370">
     
     <Grid>
@@ -92,7 +93,7 @@
                 <TranslateTransform X="20" Y="120" />
             </CheckBox.RenderTransform>
         </CheckBox>
-        <Button Content="Войти" FontSize="30" Width="315" Height="35" FontFamily="Mistral" Background="Turquoise" Click="GoButton_Click">
+        <Button Content="Войти" FontSize="30" Width="315" Height="35" FontFamily="Mistral" Background="Turquoise"  Click="GoButton_Click">
             <Button.RenderTransform>
                 <TranslateTransform X="-2" Y="150" />
             </Button.RenderTransform>
