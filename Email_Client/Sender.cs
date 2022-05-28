@@ -59,7 +59,10 @@ namespace Email_Client
             List<string> listOfString)
         {
             MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);
-            await Task.Run(() => { _smtpClient.Send(emailMessage); });
+            await Task.Run(() => {
+                _smtpClient.Send(emailMessage);
+                Receiver.AppendSentMessage(emailMessage);
+            });
         }
 
         public static async Task CloseConnection()

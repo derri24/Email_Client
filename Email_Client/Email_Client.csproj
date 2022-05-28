@@ -108,6 +108,9 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="loading.xaml.cs">
+          <DependentUpon>loading.xaml</DependentUpon>
+        </Compile>
         <Compile Include="MessageType.cs" />
         <Compile Include="ReceiveMessageWindow.xaml.cs">
           <DependentUpon>ReceiveMessageWindow.xaml</DependentUpon>
@@ -121,6 +124,7 @@
         <Compile Include="SettingsWindow.xaml.cs">
           <DependentUpon>SettingsWindow.xaml</DependentUpon>
         </Compile>
+        <Page Include="loading.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -154,6 +158,9 @@
     <ItemGroup>
         <None Include="App.config" />
         <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="loading.gif" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

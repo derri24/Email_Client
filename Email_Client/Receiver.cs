@@ -139,8 +139,14 @@ namespace Email_Client
                    $"{GetDataFromField(headerList, "Subject")}      " +
                    $"{GetDataFromField(headerList, "From")}      " +
                    $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
+            
         }
 
+
+        public static void AppendSentMessage(MimeMessage message)
+        {
+            _imapClient.GetFolder(SpecialFolder.Sent).Append(new AppendRequest(message));
+        }
         private static IList<UniqueId> listOfUniqueIds;
 
         public static async Task<List<string>> GetFoundHeaders(int firstIndex, int lastIndex, string searchString)
