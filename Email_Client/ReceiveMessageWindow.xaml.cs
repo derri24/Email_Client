@@ -10,9 +10,11 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using MimeKit;
 using mshtml;
+using WpfAnimatedGif;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Email_Client
@@ -53,8 +55,17 @@ namespace Email_Client
 
         private bool openAccess = false;
 
+        private void AddLoading()
+        {
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.UriSource = new Uri("loading.gif");
+            image.EndInit();
+            ImageBehavior.SetAnimatedSource(new Image(), image);
+        }
         private async void LoadWindow(object sender, RoutedEventArgs e)
         {
+            // AddLoading();
             openAccess = false;
             MessagesListBox.IsEnabled = false;
             Receiver.TypeMessage = MessageType.Sent;
@@ -72,6 +83,7 @@ namespace Email_Client
             await GetMessages();
             openAccess = true;
             MessagesListBox.IsEnabled = true;
+            
         }
 
         private async void LeftArrowButton_Click(object sender, RoutedEventArgs e)

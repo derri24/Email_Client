@@ -42,7 +42,7 @@ namespace Email_Client
                     ReceiveMessageWindow receiveMessageWindow = new ReceiveMessageWindow();
                     receiveMessageWindow.ShowDialog();
                 }
-                catch
+                catch(Exception)
                 {
                     MessageBox.Show("Ошибка авторизации!\nПроверьте заполненные поля и подключение к интернету!");
                 }

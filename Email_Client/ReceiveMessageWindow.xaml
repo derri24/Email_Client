@@ -4,6 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Email_Client"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        
         mc:Ignorable="d"
         Loaded="LoadWindow"
         ResizeMode="NoResize"
@@ -151,8 +153,8 @@
                     <Setter Property="CornerRadius" Value="5" />
                 </Style>
             </Button.Resources>
-        
         </Button>
-       
-    </Grid>
+        <Image gif:ImageBehavior.AnimatedSource="loading.gif" gif:ImageBehavior.RepeatBehavior="Forever"  />
+
+       </Grid>
 </Window>

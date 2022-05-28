@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Email_Client"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Closed="MainWindow_OnClosed"
@@ -103,6 +104,5 @@
                 </Style>
             </Button.Resources>
         </Button>
-        
     </Grid>
 </Window>

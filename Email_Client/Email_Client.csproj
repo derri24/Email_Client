@@ -102,15 +102,16 @@
         <Reference Include="WindowsBase" />
         <Reference Include="PresentationCore" />
         <Reference Include="PresentationFramework" />
+        <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc">
+          <HintPath>..\packages\WpfAnimatedGif.2.0.2\lib\net40\WpfAnimatedGif.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
         <ApplicationDefinition Include="App.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="loading.xaml.cs">
-          <DependentUpon>loading.xaml</DependentUpon>
-        </Compile>
         <Compile Include="MessageType.cs" />
         <Compile Include="ReceiveMessageWindow.xaml.cs">
           <DependentUpon>ReceiveMessageWindow.xaml</DependentUpon>
@@ -124,7 +125,6 @@
         <Compile Include="SettingsWindow.xaml.cs">
           <DependentUpon>SettingsWindow.xaml</DependentUpon>
         </Compile>
-        <Page Include="loading.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
