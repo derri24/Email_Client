@@ -154,7 +154,11 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Image gif:ImageBehavior.AnimatedSource="loading.gif" gif:ImageBehavior.RepeatBehavior="Forever"  />
+        <Image gif:ImageBehavior.AnimatedSource="loading.gif" gif:ImageBehavior.RepeatBehavior="Forever" Width="150" Visibility="Hidden" Name="LoadingGif">
+            <Image.RenderTransform>
+                <TranslateTransform X="100" Y="0" />
+            </Image.RenderTransform>
+        </Image>
 
        </Grid>
 </Window>

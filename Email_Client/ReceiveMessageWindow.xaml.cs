@@ -54,20 +54,12 @@ namespace Email_Client
         }
 
         private bool openAccess = false;
-
-        private void AddLoading()
-        {
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.UriSource = new Uri("loading.gif");
-            image.EndInit();
-            ImageBehavior.SetAnimatedSource(new Image(), image);
-        }
+        
         private async void LoadWindow(object sender, RoutedEventArgs e)
         {
-            // AddLoading();
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = await Receiver.GetCountMessages();
 
@@ -81,9 +73,10 @@ namespace Email_Client
             ReceivedMessagesBtn.Content = $"Входящие: {countMessages}";
             ReceivedMessagesBtn.Background = Brushes.LightGray;
             await GetMessages();
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
-            
+
         }
 
         private async void LeftArrowButton_Click(object sender, RoutedEventArgs e)
@@ -92,6 +85,7 @@ namespace Email_Client
                 return;
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             if (counter % CountOfMessagesOnPage == 0 && counter - CountOfMessagesOnPage > 0)
             {
                 MessagesListBox.Items.Clear();
@@ -127,7 +121,7 @@ namespace Email_Client
                 number--;
                 PageNumberLabel.Content = number.ToString();
             }
-
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
         }
@@ -138,6 +132,7 @@ namespace Email_Client
                 return;
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             if (counter + CountOfMessagesOnPage <= countMessages)
             {
                 MessagesListBox.Items.Clear();
@@ -167,7 +162,7 @@ namespace Email_Client
                 number++;
                 PageNumberLabel.Content = number.ToString();
             }
-
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
         }
@@ -183,6 +178,7 @@ namespace Email_Client
                 return;
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             try
             {
                 await Receiver.Update();
@@ -207,7 +203,7 @@ namespace Email_Client
             {
                 MessageBox.Show("Ошибка переподключения!\nПроверьте подключение к интернету!");
             }
-
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
         }
@@ -298,6 +294,7 @@ namespace Email_Client
                 return;
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
@@ -309,8 +306,10 @@ namespace Email_Client
             if (countMessages < counter)
                 counter = countMessages;
             await GetMessages();
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
+            
         }
 
         private async void SentMessagesButton_Click(object sender, RoutedEventArgs e)
@@ -319,6 +318,7 @@ namespace Email_Client
                 return;
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             SearchBox.Text = "";
             counter = CountOfMessagesOnPage;
             ShowListBoxOfMessages();
@@ -330,6 +330,7 @@ namespace Email_Client
             if (countMessages < counter)
                 counter = countMessages;
             await GetMessages();
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
         }
@@ -338,8 +339,10 @@ namespace Email_Client
         {
             if (!openAccess)
                 return;
+            
             openAccess = false;
             MessagesListBox.IsEnabled = false;
+            LoadingGif.Visibility = Visibility.Visible;
             if (SearchBox.Text != "")
             {
                 counter = CountOfMessagesOnPage;
@@ -370,7 +373,7 @@ namespace Email_Client
                 MessageBox.Show(
                     "Ваш запрос пуст, попробуйте сформулировать запрос иначе.");
             }
-
+            LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
             MessagesListBox.IsEnabled = true;
         }
