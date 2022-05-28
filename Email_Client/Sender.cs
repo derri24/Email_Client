@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
 

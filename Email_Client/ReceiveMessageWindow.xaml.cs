@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,14 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using MimeKit;
-using mshtml;
-using WpfAnimatedGif;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Email_Client
@@ -220,7 +214,7 @@ namespace Email_Client
         }
 
 
-        private async void ListBoxItemDouble_Click(object sender, MouseButtonEventArgs e)
+        private void ListBoxItemDouble_Click(object sender, MouseButtonEventArgs e)
         {
             MyWebBrowser.Visibility = Visibility.Visible;
             ComeBackBtn.Visibility = Visibility.Visible;
@@ -245,7 +239,7 @@ namespace Email_Client
         }
 
 
-        private async void SaveAttachmentsButton_Click(object sender, RoutedEventArgs e)
+        private void SaveAttachmentsButton_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             var attachments = Receiver.GetAttachments(index);

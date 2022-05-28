@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using MailKit;
 using MailKit.Net.Imap;
@@ -53,8 +50,7 @@ namespace Email_Client
 
             return "(Без темы)";
         }
-
-
+        
         public static async Task Update()
         {
            await CloseConnection();
@@ -64,8 +60,7 @@ namespace Email_Client
             else
                 _mailFolder = _imapClient.GetFolder(SpecialFolder.Sent);
         }
-
-
+        
         public static async Task<int> GetCountMessages()
         {
             await Task.Run(() =>
@@ -135,13 +130,11 @@ namespace Email_Client
 
         private static string GetHeaderString(HeaderList headerList, int i)
         {
-            return $"{i}" +
+            return 
                    $"{GetDataFromField(headerList, "Subject")}      " +
                    $"{GetDataFromField(headerList, "From")}      " +
                    $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
-            
         }
-
 
         public static void AppendSentMessage(MimeMessage message)
         {
