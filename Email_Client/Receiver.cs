@@ -48,7 +48,7 @@ namespace Email_Client
                 if (headerList[i].Field == field)
                     return headerList[i].Value;
 
-            return "(Без темы)";
+            return "";
         }
         
         public static async Task Update()
@@ -122,16 +122,18 @@ namespace Email_Client
                 for (int i = firstIndex; i < lastIndex; i++)
                 {
                     var headerList = _mailFolder.GetHeaders(i);
-                    listOfMessages.Add(GetHeaderString(headerList, i));
+                    listOfMessages.Add(GetHeaderString(headerList));
                 }
             });
             return listOfMessages;
         }
 
-        private static string GetHeaderString(HeaderList headerList, int i)
+        private static string GetHeaderString(HeaderList headerList)
         {
+            var subject = GetDataFromField(headerList, "Subject");
+            if (subject == "") subject = "(Без темы)";
             return 
-                   $"{GetDataFromField(headerList, "Subject")}      " +
+                   $"{subject}      " +
                    $"{GetDataFromField(headerList, "From")}      " +
                    $"{GetDataFromField(headerList, "Date").Split('+')[0]}";
         }
@@ -154,7 +156,7 @@ namespace Email_Client
                 for (int i = firstIndex; i < lastIndex; i++)
                 {
                     var headerList = _mailFolder.GetHeaders(listOfUniqueIds[i]);
-                    listOfMessages.Add(GetHeaderString(headerList, i));
+                    listOfMessages.Add(GetHeaderString(headerList));
                 }
             });
             return listOfMessages;

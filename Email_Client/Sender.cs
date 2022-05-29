@@ -57,6 +57,8 @@ namespace Email_Client
         public static async Task SendMessage(string recipient, string subject, string message,
             List<string> listOfString)
         {
+            if (subject=="")
+                subject = "(Без темы)";
             MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);
             await Task.Run(() => {
                 _smtpClient.Send(emailMessage);

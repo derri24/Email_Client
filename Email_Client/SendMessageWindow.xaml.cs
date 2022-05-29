@@ -55,6 +55,7 @@ namespace Email_Client
                 MessageBox.Show("Ошибка подключения! Пожалуйста, заполните настройки.");
                 SettingsWindow settingsWindow = new SettingsWindow();
                 settingsWindow.ShowDialog();
+                openAccess = true;
                 return;
             }
 
