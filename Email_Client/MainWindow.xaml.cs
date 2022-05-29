@@ -40,7 +40,6 @@ namespace Email_Client
                 {
                     MessageBox.Show("Ошибка авторизации!\nПроверьте заполненные поля и подключение к интернету!");
                 }
-
                 openAccess = true;
             }
         }

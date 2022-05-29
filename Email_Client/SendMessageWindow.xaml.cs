@@ -58,7 +58,6 @@ namespace Email_Client
                 openAccess = true;
                 return;
             }
-
             if (ReceiverTextBox.Text == "")
             {
                 MessageBox.Show("Заполненение поля <Получатель> обязательно!");
