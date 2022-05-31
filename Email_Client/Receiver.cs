@@ -47,13 +47,12 @@ namespace Email_Client
             for (int i = 0; i < headerList.Count; i++)
                 if (headerList[i].Field == field)
                     return headerList[i].Value;
-
             return "";
         }
         
         public static async Task Update()
         {
-           await CloseConnection();
+            await CloseConnection();
             await Authorization(_host, _port, _email, _password, _ssl);
             if (TypeMessage == MessageType.Received)
                 _mailFolder = _imapClient.Inbox;

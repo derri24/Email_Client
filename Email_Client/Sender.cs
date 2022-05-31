@@ -14,23 +14,23 @@ namespace Email_Client
         private static bool _isConnected;
         public static bool IsConnected => _isConnected;
 
-        private static BodyBuilder CreateMessageContent(string message, List<string> listOfString)
+        private static BodyBuilder CreateMessageContent(string message, List<string> listOfPath)
         {
             var builder = new BodyBuilder();
-            for (int i = 0; i < listOfString.Count; i++)
-                builder.Attachments.Add(listOfString[i]);
+            for (int i = 0; i < listOfPath.Count; i++)
+                builder.Attachments.Add(listOfPath[i]);
             builder.HtmlBody = message;
             return builder;
         }
 
         private static MimeMessage CreateMessage(string recipient, string subject, string message,
-            List<string> listOfString)
+            List<string> listOfPath)
         {
             MimeMessage emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("", _email));
             emailMessage.To.Add(new MailboxAddress("", recipient));
             emailMessage.Subject = subject;
-            emailMessage.Body = CreateMessageContent(message, listOfString).ToMessageBody();
+            emailMessage.Body = CreateMessageContent(message, listOfPath).ToMessageBody();
             return emailMessage;
         }
 
@@ -55,12 +55,13 @@ namespace Email_Client
         }
 
         public static async Task SendMessage(string recipient, string subject, string message,
-            List<string> listOfString)
+            List<string> listOfPath)
         {
-            if (subject=="")
+            if (subject == "")
                 subject = "(Без темы)";
-            MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfString);
-            await Task.Run(() => {
+            MimeMessage emailMessage = CreateMessage(recipient, subject, message, listOfPath);
+            await Task.Run(() =>
+            {
                 _smtpClient.Send(emailMessage);
                 Receiver.AppendSentMessage(emailMessage);
             });

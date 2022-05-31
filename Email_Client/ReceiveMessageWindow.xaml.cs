@@ -53,7 +53,7 @@ namespace Email_Client
         {
             openAccess = false;
             MessagesListBox.IsEnabled = false;
-            LoadingGif.Visibility = Visibility.Visible;
+           LoadingGif.Visibility = Visibility.Visible;
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = await Receiver.GetCountMessages();
 
@@ -333,7 +333,6 @@ namespace Email_Client
         {
             if (!openAccess)
                 return;
-            
             openAccess = false;
             MessagesListBox.IsEnabled = false;
             LoadingGif.Visibility = Visibility.Visible;
@@ -364,8 +363,7 @@ namespace Email_Client
             }
             else
             {
-                MessageBox.Show(
-                    "Ваш запрос пуст, попробуйте сформулировать запрос иначе.");
+                MessageBox.Show("Ваш запрос пуст, попробуйте сформулировать запрос иначе.");
             }
             LoadingGif.Visibility = Visibility.Hidden;
             openAccess = true;
