@@ -48,5 +48,10 @@ namespace Email_Client
         {
             Environment.Exit(0);
         }
+        
+        private void InfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Для авторизации и получения сообщения необходимо подключиться к IMAP серверу. Для этого нужно заполнить поля, представленные в окне.");
+        }
     }
 }

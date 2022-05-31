@@ -16,7 +16,16 @@
                 <TranslateTransform X="15" Y="5" />
             </Label.RenderTransform>
         </Label>
-        
+        <Button Content="?" FontSize="25" Width="22" Height="33" FontFamily="Mistral" Background="Turquoise"  Click="InfoButton_Click">
+            <Button.RenderTransform>
+                <TranslateTransform X="145" Y="-100" />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3" />
+                </Style>
+            </Button.Resources>
+        </Button>
         <Label FontSize="30" FontWeight="10" FontFamily="Mistral">
             Хост:
             <Label.RenderTransform>

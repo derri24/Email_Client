@@ -59,5 +59,10 @@ namespace Email_Client
 
             Environment.Exit(0);
         }
+
+        private void InfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Для отправки сообщения необходимо подключиться к SMTP серверу. Для этого нужно заполнить поля, представленные в окне.");
+        }
     }
 }

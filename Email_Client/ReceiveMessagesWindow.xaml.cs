@@ -53,7 +53,7 @@ namespace Email_Client
         {
             openAccess = false;
             MessagesListBox.IsEnabled = false;
-           LoadingGif.Visibility = Visibility.Visible;
+            LoadingGif.Visibility = Visibility.Visible;
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = await Receiver.GetCountMessages();
 
@@ -370,5 +370,9 @@ namespace Email_Client
             MessagesListBox.IsEnabled = true;
         }
         
+        private void InfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Поиск производится по свойствам 'Отправитель' и 'Тема сообщения'.\nДля просмотра сообщения необходимо дважды кликнуть по сообщению.");
+        }
     }
 }

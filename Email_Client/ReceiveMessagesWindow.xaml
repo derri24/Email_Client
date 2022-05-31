@@ -22,10 +22,10 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Label FontSize="25" FontWeight="10" FontFamily="Mistral" Margin="0,0,0,30" Name="EmailLabel">
+        <Label FontSize="22" FontWeight="10" FontFamily="Mistral" Margin="0,0,0,30" Name="EmailLabel">
             tvo77iNik@mail.com
             <Label.RenderTransform>
-                <TranslateTransform X="90" Y="30" />
+                <TranslateTransform X="115" Y="30" />
             </Label.RenderTransform>
         </Label>
 
@@ -46,6 +46,16 @@
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="?" FontSize="25" Width="22" Height="33" FontFamily="Mistral" Background="Turquoise" Click="InfoButton_Click">
+            <Button.RenderTransform>
+                <TranslateTransform X="-475" Y="-310" />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
         </Button>

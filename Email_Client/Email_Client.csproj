@@ -113,8 +113,8 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="MessageType.cs" />
-        <Compile Include="ReceiveMessageWindow.xaml.cs">
-          <DependentUpon>ReceiveMessageWindow.xaml</DependentUpon>
+        <Compile Include="ReceiveMessagesWindow.xaml.cs">
+          <DependentUpon>ReceiveMessagesWindow.xaml</DependentUpon>
         </Compile>
         <Compile Include="Receiver.cs" />
         <Compile Include="Sender.cs" />
@@ -125,7 +125,7 @@
         <Compile Include="SettingsWindow.xaml.cs">
           <DependentUpon>SettingsWindow.xaml</DependentUpon>
         </Compile>
-        <Page Include="Authorization.xaml">
+        <Page Include="AuthorizationWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </Page>
@@ -133,11 +133,11 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Authorization.xaml.cs">
-            <DependentUpon>Authorization.xaml</DependentUpon>
+        <Compile Include="AuthorizationWindow.xaml.cs">
+            <DependentUpon>AuthorizationWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Page Include="ReceiveMessageWindow.xaml" />
+        <Page Include="ReceiveMessagesWindow.xaml" />
         <Page Include="SendMessageWindow.xaml" />
         <Page Include="SettingsWindow.xaml" />
     </ItemGroup>

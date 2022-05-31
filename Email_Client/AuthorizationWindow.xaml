@@ -18,11 +18,10 @@
                 <TranslateTransform X="24" Y="7" />
             </Label.RenderTransform>
         </Label>
-        
         <Label FontSize="30" FontWeight="10" FontFamily="Mistral">
            Хост:
             <Label.RenderTransform>
-                <TranslateTransform X="25" Y="95" />
+                <TranslateTransform X="25" Y="90" />
             </Label.RenderTransform>
         </Label>
         <TextBox FontSize="16" Width="230" Height="25" FontFamily="Century" Name="ReceiptHostTextBox" Text="imap.yandex.ru">
@@ -40,7 +39,7 @@
         <Label FontSize="30" FontWeight="10" FontFamily="Mistral">
             Порт:
             <Label.RenderTransform>
-                <TranslateTransform X="21" Y="140" />
+                <TranslateTransform X="21" Y="135" />
             </Label.RenderTransform>
         </Label>
         <TextBox FontSize="16" Width="230" Height="25" FontFamily="Century" Name="ReceiptPortTextBox" Text="993">
@@ -57,7 +56,7 @@
         <Label FontSize="30" FontWeight="10" FontFamily="Mistral">
             Email:
             <Label.RenderTransform>
-                <TranslateTransform X="18" Y="185" />
+                <TranslateTransform X="18" Y="180" />
             </Label.RenderTransform>
         </Label>
         <TextBox FontSize="16" Width="230" Height="25" FontFamily="Century" Name="EmailTextBox" Text="lab7.vt@yandex.ru">
@@ -74,7 +73,7 @@
         <Label FontSize="30" FontWeight="10" FontFamily="Mistral">
             Пароль:
             <Label.RenderTransform>
-                <TranslateTransform X="12" Y="230" />
+                <TranslateTransform X="12" Y="225" />
             </Label.RenderTransform>
         </Label>
  
@@ -95,9 +94,20 @@
                 <TranslateTransform X="20" Y="120" />
             </CheckBox.RenderTransform>
         </CheckBox>
-        <Button Content="Войти" FontSize="30" Width="315" Height="35" FontFamily="Mistral" Background="Turquoise"  Click="GoButton_Click">
+        <Button Content="Войти" FontSize="30" Width="295" Height="35" FontFamily="Mistral" Background="Turquoise"  Click="GoButton_Click">
             <Button.RenderTransform>
-                <TranslateTransform X="-2" Y="150" />
+                <TranslateTransform X="-15" Y="150" />
+            </Button.RenderTransform>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        
+        <Button Content="?" FontSize="25" Width="22" Height="35" FontFamily="Mistral" Background="Turquoise" Click="InfoButton_Click" >
+            <Button.RenderTransform>
+                <TranslateTransform X="150" Y="150" />
             </Button.RenderTransform>
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
