@@ -4,9 +4,9 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace Email_Client
 {
-    public partial class MainWindow
+    public partial class AuthorizationWindow
     {
-        public MainWindow()
+        public AuthorizationWindow()
         {
             InitializeComponent();
         }
@@ -44,7 +44,7 @@ namespace Email_Client
             }
         }
 
-        private void MainWindow_OnClosed(object sender, EventArgs e)
+        private void AuthorizationWindow_OnClosed(object sender, EventArgs e)
         {
             Environment.Exit(0);
         }

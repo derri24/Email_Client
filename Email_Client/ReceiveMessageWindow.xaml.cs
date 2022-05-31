@@ -57,7 +57,7 @@ namespace Email_Client
             Receiver.TypeMessage = MessageType.Sent;
             countMessages = await Receiver.GetCountMessages();
 
-            MainWindow mainWindow = new MainWindow();
+            AuthorizationWindow mainWindow = new AuthorizationWindow();
             EmailLabel.Content = mainWindow.EmailTextBox.Text;
             SentMessagesBtn.Content = $"Исходящие: {countMessages}";
 

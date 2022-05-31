@@ -125,7 +125,7 @@
         <Compile Include="SettingsWindow.xaml.cs">
           <DependentUpon>SettingsWindow.xaml</DependentUpon>
         </Compile>
-        <Page Include="MainWindow.xaml">
+        <Page Include="Authorization.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </Page>
@@ -133,8 +133,8 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="MainWindow.xaml.cs">
-            <DependentUpon>MainWindow.xaml</DependentUpon>
+        <Compile Include="Authorization.xaml.cs">
+            <DependentUpon>Authorization.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
         <Page Include="ReceiveMessageWindow.xaml" />

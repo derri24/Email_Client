@@ -8,6 +8,7 @@ namespace Email_Client
     public static class Sender
     {
         private static SmtpClient _smtpClient;
+      
 
         private static string _email;
         private static string _password;
