@@ -51,7 +51,7 @@ namespace Email_Client
                 _smtpClient = new SmtpClient();
                 _smtpClient.Connect(host, port, ssl);
                 _smtpClient.Authenticate(_email, _password);
-                _isConnected = true;
+                _isConnected = ssl;
             });
         }
 
